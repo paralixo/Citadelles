@@ -29,14 +29,14 @@ describe("Database.ts", () => {
         json: true,
         body: {}
       }
-      if (collection === "District") {
-        it(`should create ${collection.toLowerCase()} from API`, async () => {
-          options.body = testDatas[3]
-          options.method = "POST"
-          const responseData: IResponseData = await request(options)
-          expect(responseData.success).toBeTruthy()
-        })
-      }
+      // if (collection === "District") {
+      //   it(`should create ${collection.toLowerCase()} from API`, async () => {
+      //     options.body = testDatas[3]
+      //     options.method = "POST"
+      //     const responseData: IResponseData = await request(options)
+      //     expect(responseData.success).toBeTruthy()
+      //   })
+      // }
 
       it(`should read ${collection.toLowerCase()} data from API`, async () => {
         options.body = {}
@@ -45,10 +45,10 @@ describe("Database.ts", () => {
         expect(responseData.success).toBeTruthy()
       })
 
-      it(`should delete ${collection.toLowerCase()} from API`, async () => {
-        const responseData: IResponseData = await request(options)
-        expect(responseData.success).toBeTruthy()
-      })
+      // it(`should delete ${collection.toLowerCase()} from API`, async () => {
+      //   const responseData: IResponseData = await request(options)
+      //   expect(responseData.success).toBeTruthy()
+      // })
     })
   })
 })
