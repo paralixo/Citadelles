@@ -40,6 +40,7 @@ yarn electron:build
 Puis envoyer l'installeur `./dist_electron/citadelles.exe`
 
 ## Tests
+Après avoir lancé l'application (pour que les apis tournent)
 ```
 yarn test:unit
 ```
