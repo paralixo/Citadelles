@@ -4,7 +4,6 @@ import { DATABASE_API_PORT } from "@/api/database/constants/database.constants"
 import { IRouteModelMap } from "@/api/database/interfaces/RouteModelMap.interface"
 import { IResponseData } from "@/api/database/interfaces/ResponseData.interface"
 
-import Board from "@/api/database/models/Board"
 import Character from "@/api/database/models/Character"
 import Deck from "@/api/database/models/Deck"
 import District from "@/api/database/models/District"
@@ -18,7 +17,6 @@ const application = express()
 application.use(express.json())
 
 const routeModelMapping: IRouteModelMap[] = [
-  { route: "/Board", model: Board },
   { route: "/Character", model: Character },
   { route: "/Deck", model: Deck },
   { route: "/District", model: District },
@@ -67,7 +65,7 @@ routeModelMapping.forEach((object) => {
 
   application.delete(object.route, async (request: any, response: any) => {
     const condition: object = request.body
-    const deleteData: Promise<any> = object.model.deleteMany(condition)
+    const deleteData: Promise<any> = object.model.deleteOne(condition)
     const responseData: IResponseData = await getPromiseResponse(deleteData)
     response.send(responseData)
   })

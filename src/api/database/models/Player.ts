@@ -19,7 +19,13 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
     autopopulate: true
   },
 
-  districts: [{
+  hand: [{
+    type: OBJECT_ID,
+    ref: DISTRICT,
+    autopopulate: true
+  }],
+
+  board: [{
     type: OBJECT_ID,
     ref: DISTRICT,
     autopopulate: true
