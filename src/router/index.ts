@@ -2,6 +2,7 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import Home from "../views/Home.vue"
 import GameConfiguration from "@/views/GameConfiguration.vue"
+import Board from "@/views/Board.vue"
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/gameConfiguration",
     name: "gameConfiguration",
     component: GameConfiguration
+  },
+  {
+    path: "/board",
+    name: "board",
+    component: Board
   },
   {
     path: "/about",
