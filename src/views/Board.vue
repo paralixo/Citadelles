@@ -21,7 +21,6 @@ import Playground from "@/components/Playground.vue"
   components: { Card, Coin, Playground }
 })
 export default class Board extends Vue {
-  public up : boolean = false;
   public nbrPlayer : number = 2;
   public cards : any[] = [require("../assets/cards/roi.jpg"), require("../assets/cards/roi.jpg"), require("../assets/cards/roi.jpg")];
 }
