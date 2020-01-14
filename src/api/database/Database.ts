@@ -67,7 +67,7 @@ routeModelMapping.forEach((object) => {
 
   application.delete(object.route, async (request: any, response: any) => {
     const condition: object = request.body
-    const deleteData: Promise<any> = object.model.deleteOne(condition)
+    const deleteData: Promise<any> = object.model.deleteMany(condition)
     const responseData: IResponseData = await getPromiseResponse(deleteData)
     response.send(responseData)
   })
