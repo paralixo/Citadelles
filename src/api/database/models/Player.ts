@@ -25,6 +25,12 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
     autopopulate: true
   }],
 
+  temporary_hand: [{
+    type: OBJECT_ID,
+    ref: DISTRICT,
+    autopopulate: true
+  }],
+
   board: [{
     type: OBJECT_ID,
     ref: DISTRICT,

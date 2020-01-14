@@ -8,11 +8,16 @@ const deckSchema: mongoose.Schema = new mongoose.Schema({
     required: true
   },
 
-  districts: [{
+  cards: [{
     type: OBJECT_ID,
-    ref: DISTRICT,
+    refPath: "onModel",
     autopopulate: true
-  }]
+  }],
+
+  type: {
+    type: String,
+    required: true
+  }
 })
 
 deckSchema.plugin(require("mongoose-autopopulate"))
