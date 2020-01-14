@@ -1,6 +1,6 @@
 <template>
 <div>
-      <Playground><img class="playground" src="../assets/images/rectangle-.png-5.png" alt=""></Playground>
+      <Playground><img class="playground" src="../assets/images/playground.png" alt=""></Playground>
       <div class="hand">
 
         <Card class="card" v-for="(card, key) of cards" :key="key" ><img :src="card" alt=""></Card>
