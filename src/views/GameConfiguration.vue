@@ -1,5 +1,8 @@
 <template>
+  <div>
+  <MenuButton href="#/board">Play</MenuButton>
   <MenuButton href="#/">Retour</MenuButton>
+  </div>
 </template>
 
 <script lang="ts">
