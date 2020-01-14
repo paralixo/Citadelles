@@ -1,7 +1,7 @@
 <template>
     <div>
         <slot></slot>
-        <p class="count">5</p>
+        <p class="count">{{coins}}</p>
     </div>
 </template>
 
@@ -10,6 +10,7 @@ import { Component, Prop, Vue } from "vue-property-decorator"
 @Component
 export default class Card extends Vue {
     @Prop() public src!: string
+    public coins : number = 8;
 }
 </script>
 

@@ -2,11 +2,8 @@
 <div>
       <Playground><img class="playground" src="../assets/images/rectangle-.png-5.png" alt=""></Playground>
       <div class="hand">
-        <Card class="card" ><img src="../assets/cards/roi.jpg" alt=""></Card>
-        <Card class="card" ><img src="../assets/cards/roi.jpg" alt=""></Card>
-        <Card class="card" ><img src="../assets/cards/roi.jpg" alt=""></Card>
-        <Card class="card" ><img src="../assets/cards/roi.jpg" alt=""></Card>
-        <Card class="card" ><img src="../assets/cards/roi.jpg" alt=""></Card>
+
+        <Card class="card" v-for="(card, key) of cards" :key="key" ><img :src="card" alt=""></Card>
       </div>
       <div class="coin">
         <Coin><img class="coinSprite" src="../assets/images/piece.jpg" alt=""></Coin>
@@ -24,7 +21,9 @@ import Playground from "@/components/Playground.vue"
   components: { Card, Coin, Playground }
 })
 export default class Board extends Vue {
-
+  public up : boolean = false;
+  public nbrPlayer : number = 2;
+  public cards : any[] = [require("../assets/cards/roi.jpg"), require("../assets/cards/roi.jpg"), require("../assets/cards/roi.jpg")];
 }
 </script>
 
@@ -60,5 +59,17 @@ body {
 
 .playground {
   width: 75%;
+}
+
+.swip-up-enter-active {
+  transition: all .3s ease;
+}
+.swip-up-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.swip-up-enter, .swip-up-leave-to
+/* .swip-up-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
