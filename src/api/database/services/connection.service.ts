@@ -7,7 +7,7 @@ const connectionOptions: object = {
   useNewUrlParser: true
 }
 
-class Connection {
+class ConnectionService {
   constructor () {
     mongoose.connect(DATABASE_URI, connectionOptions)
       .then(() => {
@@ -19,4 +19,4 @@ class Connection {
   }
 }
 
-export default new Connection()
+export default new ConnectionService()

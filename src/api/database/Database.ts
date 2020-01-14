@@ -10,8 +10,10 @@ import District from "@/api/database/models/District"
 import Player from "@/api/database/models/Player"
 import Type from "@/api/database/models/Type"
 
-import "@/api/database/Connection"
+import "@/api/database/services/connection.service"
 import { PATCH_CONDITION, PATCH_VALUE } from "@/api/database/constants/parameters.constants"
+
+import "./services/generation.service"
 
 const application = express()
 application.use(express.json())

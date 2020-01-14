@@ -7,6 +7,7 @@ import {
 } from "vue-cli-plugin-electron-builder/lib"
 
 import "@/api/database/Database"
+import "@/api/game/Game"
 
 const isDevelopment = process.env.NODE_ENV !== "production"
 

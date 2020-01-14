@@ -9,7 +9,8 @@ export const CHARACTER_TEST_DATA: object = {
 
 export const DECK_TEST_DATA: object = {
   cards_number: 0,
-  districts: []
+  cards: [],
+  type: "type"
 }
 
 export const DISTRICT_TEST_DATA: object = {
