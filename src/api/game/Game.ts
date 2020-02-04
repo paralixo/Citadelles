@@ -20,6 +20,8 @@ import {
   updateFieldsOfPlayer
 } from "@/api/game/services/player.service"
 import { IDeckData } from "@/api/game/interfaces/models/DeckData.interface"
+import { IDistrictCardData } from "@/api/game/interfaces/models/cards/DistrictCardData.interface"
+import { getDistrictById } from "@/api/game/services/district.service"
 
 const application = express()
 application.use(express.json())
@@ -81,6 +83,39 @@ application.get("/player/:name/discard/:choice", async (request: any, response: 
   await updateFieldsOfPlayer(playerName, [
     { field: "temporary_hand", value: [] },
     { field: "hand", value: player.hand }
+  ])
+
+  response.send({ success: true })
+})
+
+application.get("/player/:name/buy/:choice", async (request: any, response: any) => {
+  const playerName: string = request.params.name
+  const choice: number = parseInt(request.params.choice)
+
+  const player: IPlayerData = await getPlayerOnName(playerName)
+  if (!player) {
+    response.send({ success: false })
+    return
+  }
+  const buyedDistrict: IDistrictCardData = await getDistrictById(player.hand[choice])
+  if (!buyedDistrict) {
+    response.send({ success: false })
+    return
+  }
+
+  player.money -= buyedDistrict.price
+  if (player.money < 0) {
+    response.send({ success: false })
+    return
+  }
+
+  player.hand.splice(choice, 1)
+  player.board.push(buyedDistrict._id)
+
+  await updateFieldsOfPlayer(playerName, [
+    { field: "hand", value: player.hand },
+    { field: "board", value: player.board },
+    { field: "money", value: player.money }
   ])
 
   response.send({ success: true })
