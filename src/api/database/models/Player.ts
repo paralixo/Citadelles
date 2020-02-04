@@ -5,6 +5,7 @@ import { CHARACTER, DISTRICT, PLAYER } from "@/api/database/constants/collection
 const playerSchema: mongoose.Schema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true
   },
 

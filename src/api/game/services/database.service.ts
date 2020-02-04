@@ -8,27 +8,28 @@ class DatabaseService {
     return request.delete(options)
   }
 
-  getAll (modelName: string, bodyParameters: any = {}) {
-    const options = this.getRequestOptions(modelName, bodyParameters)
+  getAll (modelName: string, condition: any = {}) {
+    const options = this.getRequestOptions(modelName, condition)
     return request(options)
   }
 
-  create (modelName: string, bodyParameters: any = {}) {
-    const options: IRequestOptions = this.getRequestOptions(modelName, bodyParameters)
+  create (modelName: string, data: any = {}) {
+    const options: IRequestOptions = this.getRequestOptions(modelName, data)
     return request.post(options)
   }
 
-  update (modelName: string, bodyParameters: any = {}) {
-    const options: IRequestOptions = this.getRequestOptions(modelName, bodyParameters)
+  update (modelName: string, conditionAndData: any = {}) {
+    const options: IRequestOptions = this.getRequestOptions(modelName, conditionAndData)
     return request.patch(options)
   }
 
   getRequestOptions (modelName: string, bodyParameters: any = {}): IRequestOptions {
-    return {
+    const options: IRequestOptions = {
       uri: `${DATABASE_API_SERVER}/${modelName}`,
       json: true,
       body: bodyParameters
     }
+    return options
   }
 }
 
