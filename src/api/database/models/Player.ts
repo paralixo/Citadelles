@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
-import { OBJECT_ID } from "@/api/database/constants/types.constants"
-import { CHARACTER, DISTRICT, PLAYER } from "@/api/database/constants/collections.constants"
+import mongoose from "mongoose";
+import { OBJECT_ID } from "@/api/database/constants/types.constants";
+import { CHARACTER, DISTRICT, PLAYER } from "@/api/database/constants/collections.constants";
 
 const playerSchema: mongoose.Schema = new mongoose.Schema({
   name: {
@@ -52,7 +52,7 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
   crown: {
     type: Boolean
   }
-})
+});
 
-playerSchema.plugin(require("mongoose-autopopulate"))
-export default mongoose.model(PLAYER, playerSchema)
+playerSchema.plugin(require("mongoose-autopopulate"));
+export default mongoose.model(PLAYER, playerSchema);

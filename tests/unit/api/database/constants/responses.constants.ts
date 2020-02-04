@@ -1,16 +1,16 @@
-import { IResponseEdit } from "../interfaces/ResponseEdit.interface"
+import { IResponseEdit } from "../interfaces/ResponseEdit.interface";
 
 export const UPDATE_EXPECTED_RESPONSE: IResponseEdit = {
   n: 1,
   nModified: 0,
   ok: 1
-}
+};
 
 export const DELETE_EXPECTED_RESPONSE: IResponseEdit = {
   n: 1,
   ok: 1,
   deletedCount: 1
-}
+};
 
 /*
 

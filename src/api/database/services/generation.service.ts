@@ -1,17 +1,25 @@
-import request from "request-promise"
-import { IRequestOptions } from "../../../../tests/unit/api/database/interfaces/RequestOptions.interface"
-import { DATABASE_API_SERVER } from "@/api/database/constants/database.constants"
-import { ALL_TYPES } from "@/api/database/constants/generation.constants"
-import { CHARACTER, DISTRICT, TYPE } from "@/api/database/constants/collections.constants"
-import { IResponseData } from "@/api/database/interfaces/ResponseData.interface"
+import request from "request-promise";
+import { IRequestOptions } from "../../../../tests/unit/api/database/interfaces/RequestOptions.interface";
+import { DATABASE_API_SERVER } from "@/api/database/constants/database.constants";
+import { ALL_TYPES } from "@/api/database/constants/generation.constants";
+import { CHARACTER, DISTRICT, TYPE } from "@/api/database/constants/collections.constants";
+import { IResponseData } from "@/api/database/interfaces/ResponseData.interface";
 
 function create (modelName: string, bodyParameters: any = {}) {
   const options: IRequestOptions = {
     uri: `${DATABASE_API_SERVER}/${modelName}`,
     json: true,
     body: bodyParameters
-  }
-  return request.post(options)
+  };
+  return request.post(options);
+}
+
+function clearAll (modelName: string) {
+  const options: IRequestOptions = {
+    uri: `${DATABASE_API_SERVER}/${modelName}`,
+    json: true
+  };
+  return request.delete(options);
 }
 
 function get (modelName: string, bodyParameters: any = {}) {
@@ -19,21 +27,17 @@ function get (modelName: string, bodyParameters: any = {}) {
     uri: `${DATABASE_API_SERVER}/${modelName}`,
     json: true,
     body: bodyParameters
-  }
-  return request.get(options)
+  };
+  return request.get(options);
 }
 
-ALL_TYPES.forEach(async (type) => {
-  await create(TYPE, type)
-})
-
 async function setDistricts () {
-  let typeId: any = {}
-  typeId.religion = (await get(TYPE, { label: "Religion" })).data[0]._id
-  typeId.commerceEtArtisanat = (await get(TYPE, { label: "Commerce et artisanat" })).data[0]._id
-  typeId.noblesse = (await get(TYPE, { label: "Noblesse" })).data[0]._id
-  typeId.soldatesque = (await get(TYPE, { label: "Soldatesque" })).data[0]._id
-  typeId.prestige = (await get(TYPE, { label: "Prestige" })).data[0]._id
+  let typeId: any = {};
+  typeId.religion = (await get(TYPE, { label: "Religion" })).data[0]._id;
+  typeId.commerceEtArtisanat = (await get(TYPE, { label: "Commerce et artisanat" })).data[0]._id;
+  typeId.noblesse = (await get(TYPE, { label: "Noblesse" })).data[0]._id;
+  typeId.soldatesque = (await get(TYPE, { label: "Soldatesque" })).data[0]._id;
+  typeId.prestige = (await get(TYPE, { label: "Prestige" })).data[0]._id;
 
   const districts = [
     { name: "Temple", image: "temple.jpg", description: null, price: 1, type: typeId.religion },
@@ -103,14 +107,12 @@ async function setDistricts () {
     { name: "Ecole de magie", image: "ecole_magie.jpg", description: "Pour la perception des revenus, l'école de magie est considérée comme un quartier de la couleur de votre choix, elle vous rapporte donc si vous êtes, Roi, Evêque, Marchand ou Condottiere", price: 6, type: typeId.prestige },
     { name: "Université", image: "universite.jpg", description: "Cette réalisation de prestige (nul n'a jamais compris à quoi pouvait bien servir une université) coûte six pièces d'or à bâtir mais vaux huit points dans le décompte de fin de partie.", price: 6, type: typeId.prestige },
     { name: "Dracoport", image: "dracoport.jpg", description: "Cette réalisation de prestige (on n'a pas vu de dragon dans le Royaume depuis bientôt mille ans) coûte six pièces d'or à bâtir mais vaut huit points dans le décompte de fin de partie.", price: 6, type: typeId.prestige }
-  ]
+  ];
 
   districts.forEach(async (district: object) => {
-    await create(DISTRICT, district)
-  })
+    await create(DISTRICT, district);
+  });
 }
-
-setDistricts()
 
 const characters = [
   { name: "Assassin", image: "assassin.jpg", description: "L'Assassin peut tuer le personnage de son choix. Celui-ci ne pourra pas jouer ce tour-ci", index: 1 },
@@ -121,8 +123,22 @@ const characters = [
   { name: "Marchand", image: "marchand.jpg", description: "Le Marchand reçoit une pièce d'or en plus au début de son tour. Chaque quartier marchand qu'il possède lui rapporte une pièce d'or.", index: 6 },
   { name: "Architecte", image: "architecte.jpg", description: "L'Architecte pioche deux cartes quartier en plus. Il peut bâtir jusqu'à trois quartiers.", index: 7 },
   { name: "Condotierre", image: "condotierre.jpg", description: "Le Condottiere peut détruire un quartier de son choix en payant à la banque le coût de construction du quartier moins un. Chaque quartier militaire qu'il possède lui rapporte une pièce d'or.", index: 8 }
-]
+];
 
-characters.forEach(async (character: any) => {
-  await create(CHARACTER, character)
-})
+async function setDatabase (characters: any[]) {
+  await clearAll(TYPE);
+  await clearAll(DISTRICT);
+  await clearAll(CHARACTER);
+
+  ALL_TYPES.forEach(async (type) => {
+    await create(TYPE, type);
+  });
+
+  await setDistricts();
+
+  characters.forEach(async (character: any) => {
+    await create(CHARACTER, character);
+  });
+}
+
+setDatabase(characters);

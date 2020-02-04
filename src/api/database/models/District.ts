@@ -1,6 +1,6 @@
-import mongoose from "mongoose"
-import { OBJECT_ID } from "@/api/database/constants/types.constants"
-import { DISTRICT, TYPE } from "@/api/database/constants/collections.constants"
+import mongoose from "mongoose";
+import { OBJECT_ID } from "@/api/database/constants/types.constants";
+import { DISTRICT, TYPE } from "@/api/database/constants/collections.constants";
 
 const districtSchema: mongoose.Schema = new mongoose.Schema({
   name: {
@@ -28,7 +28,7 @@ const districtSchema: mongoose.Schema = new mongoose.Schema({
     required: true,
     autopopulate: true
   }
-})
+});
 
-districtSchema.plugin(require("mongoose-autopopulate"))
-export default mongoose.model(DISTRICT, districtSchema)
+districtSchema.plugin(require("mongoose-autopopulate"));
+export default mongoose.model(DISTRICT, districtSchema);

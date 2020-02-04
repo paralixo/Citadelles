@@ -7,6 +7,7 @@ export interface IPlayerData {
   hand: any[];
   // eslint-disable-next-line camelcase
   temporary_hand: any[];
-  board: any[];
   isFinished: boolean;
+  targetedBy: string;
+  board: any[];
 }

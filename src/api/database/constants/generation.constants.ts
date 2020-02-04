@@ -4,4 +4,4 @@ export const ALL_TYPES: object[] = [
   { label: "Commerce et artisanat" },
   { label: "Soldatesque" },
   { label: "Prestige" }
-]
+];

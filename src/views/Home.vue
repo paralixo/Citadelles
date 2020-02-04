@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator"
-import MenuButton from "@/components/MenuButton.vue"
+import { Component, Prop, Vue } from "vue-property-decorator";
+import MenuButton from "@/components/MenuButton.vue";
 
 @Component({
   components: { MenuButton }

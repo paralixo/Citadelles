@@ -1,10 +1,10 @@
-import Vue from "vue"
-import VueRouter from "vue-router"
-import Home from "../views/Home.vue"
-import GameConfiguration from "@/views/GameConfiguration.vue"
-import Board from "@/views/Board.vue"
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import GameConfiguration from "@/views/GameConfiguration.vue";
+import Board from "@/views/Board.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -30,10 +30,10 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ "../views/example/About.vue")
   }
-]
+];
 
 const router = new VueRouter({
   routes
-})
+});
 
-export default router
+export default router;
