@@ -38,6 +38,18 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
     autopopulate: true
   }],
 
+  isFinished: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+
+  targetedBy: {
+    type: String,
+    required: true,
+    default: ""
+  },
+
   crown: {
     type: Boolean
   }
