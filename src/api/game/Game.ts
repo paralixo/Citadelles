@@ -18,7 +18,6 @@ import {
   getPlayerOnName,
   updateFieldOfPlayer,
   updateFieldsOfPlayer,
-  getPoints,
   getPointsFromColorsDistricts,
   getPointsFromDistricts,
   getPointsIfBoardSup8,
@@ -137,6 +136,7 @@ application.get("/player/:name/victory", async (request:any, response:any) => {
 
   if (player.board.length === 8) {
     victory = true
+    await updateFieldOfPlayer(playerName, "isFinished", true)
   }
   response.send({
     success: victory

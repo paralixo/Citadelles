@@ -60,27 +60,30 @@ export const getPointsFromColorsDistricts = async (player: IPlayerData) => {
   let special : boolean = false
 
   player.board.forEach(district => {
-    switch (district.type.label) {
-      case "Commerce et artisanat" :
-        trade = true
-        break
-      case "Noblesse" :
-        noble = true
-        break
-      case "Religion" :
-        religion = true
-        break
-      case "Soldatesque" :
-        military = true
-        break
-      case "Prestige" :
-        special = true
-        break
-    }
-    if (trade && religion && military && noble && special) {
-      counter += 3
+    if (district.type) {
+      switch (district.type.label) {
+        case "Commerce et artisanat" :
+          trade = true
+          break
+        case "Noblesse" :
+          noble = true
+          break
+        case "Religion" :
+          religion = true
+          break
+        case "Soldatesque" :
+          military = true
+          break
+        case "Prestige" :
+          special = true
+          break
+      }
+      if (trade && religion && military && noble && special) {
+        counter += 3
+      }
     }
   })
+
   return counter
 }
 
