@@ -75,7 +75,7 @@ export const draw = async (cardsToDraw: number): Promise<string[]> => {
     cards.push(districtDeck.cards[0])
     districtDeck.cards.shift()
   }
-  // TODO: update districtDeck
+  await updateFieldOfDeck("cards", districtDeck.cards)
   return cards
 }
 
@@ -90,4 +90,13 @@ export const discardFromDeck = async (deck: IDeckData, cardId: string) => {
     }
   ]
   await database.update(DECK, deckParameters)
+}
+
+export const updateFieldOfDeck = async (field: string, value: any) => {
+  const districtDeck: IDeckData = (await database.getAll(DECK, { type: DISTRICT_TYPE })).data[0]
+  const districtDeckParameters: object[] = [
+    { _id: districtDeck._id },
+    { [field]: value }
+  ]
+  await database.update(DECK, districtDeckParameters)
 }

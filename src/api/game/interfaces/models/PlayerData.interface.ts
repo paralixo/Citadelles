@@ -8,4 +8,5 @@ export interface IPlayerData {
   // eslint-disable-next-line camelcase
   temporary_hand: any[];
   board: any[];
+  isFinished: boolean;
 }

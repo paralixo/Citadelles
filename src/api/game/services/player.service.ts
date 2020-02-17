@@ -41,3 +41,61 @@ export const updateFieldsOfPlayer = async (playerName: string, fieldsAndValues: 
   ]
   await database.update(PLAYER, playerParameters)
 }
+
+export const getPointsFromDistricts = async (player: IPlayerData) => {
+  let counter:number = 0
+  player.board.forEach(district => {
+    counter += district.price
+  })
+  return counter
+}
+
+export const getPointsFromColorsDistricts = async (player: IPlayerData) => {
+  let counter:number = 0
+
+  let trade : boolean = false
+  let religion : boolean = false
+  let military : boolean = false
+  let noble : boolean = false
+  let special : boolean = false
+
+  player.board.forEach(district => {
+    switch (district.type.label) {
+      case "Commerce et artisanat" :
+        trade = true
+        break
+      case "Noblesse" :
+        noble = true
+        break
+      case "Religion" :
+        religion = true
+        break
+      case "Soldatesque" :
+        military = true
+        break
+      case "Prestige" :
+        special = true
+        break
+    }
+    if (trade && religion && military && noble && special) {
+      counter += 3
+    }
+  })
+  return counter
+}
+
+export const getPointsIfBoardSup8 = async (player: IPlayerData) => {
+  let counter:number = 0
+  if (player.board.length >= 8) {
+    counter += 2
+  }
+  return counter
+}
+
+export const getPointsIfFinishedFirst = async (player: IPlayerData) => {
+  let counter:number = 0
+  if (player.isFinished) {
+    counter += 4
+  }
+  return counter
+}
