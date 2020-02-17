@@ -46,7 +46,6 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
 
   targetedBy: {
     type: String,
-    required: true,
     default: ""
   },
 

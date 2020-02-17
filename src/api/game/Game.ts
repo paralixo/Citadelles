@@ -17,7 +17,12 @@ import {
   generatePlayers,
   getPlayerOnName,
   updateFieldOfPlayer,
-  updateFieldsOfPlayer
+  updateFieldsOfPlayer,
+  getPoints,
+  getPointsFromColorsDistricts,
+  getPointsFromDistricts,
+  getPointsIfBoardSup8,
+  getPointsIfFinishedFirst
 } from "@/api/game/services/player.service"
 import { IDeckData } from "@/api/game/interfaces/models/DeckData.interface"
 import { IDistrictCardData } from "@/api/game/interfaces/models/cards/DistrictCardData.interface"
@@ -123,6 +128,28 @@ application.get("/player/:name/buy/:choice", async (request: any, response: any)
 
 application.listen(GAME_API_PORT, () => {
   console.log(`Game API is listening on port ${GAME_API_PORT}`)
+})
+
+application.get("/player/:name/victory", async (request:any, response:any) => {
+  const playerName: string = request.params.name
+  const player: IPlayerData = await getPlayerOnName(playerName)
+  let victory: boolean = false
+
+  if (player.board.length === 8) {
+    victory = true
+  }
+  response.send({
+    success: victory
+  })
+})
+
+application.get("/player/:name/countPoints", async (request:any, response:any) => {
+  const playerName: string = request.params.name
+  const player: IPlayerData = await getPlayerOnName(playerName)
+  let points = await getPointsFromColorsDistricts(player) + await getPointsFromDistricts(player) + await getPointsIfBoardSup8(player) + await getPointsIfFinishedFirst(player)
+  response.send({
+    success: points
+  })
 })
 
 export default application
