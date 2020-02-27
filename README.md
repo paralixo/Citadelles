@@ -2,7 +2,7 @@
 Il s'agit d'un jeu sur navigateur repris du jeu de société du même nom "Citadelle".
 
 ## Motivation
-ce jeu est notre projet de bachelor 3. Citadelles est un jeu de carte qui demande de la réflexion mais qui reste amusant et sans prise de tête entre ami. Il convient parfaitement aux petits comme aux grands. Il est aussi possible de faire des parties qui sont rapide pratique quand on a pas beaucoup de temps.
+Ce jeu est notre projet de bachelor 3. C'est un jeu de cartes qui demande de la réflexion mais qui reste amusant et sans prise de tête entre amis. Il convient parfaitement aux petits comme aux grands. Il est aussi possible de faire des parties qui sont rapide , pratique quand on a pas beaucoup de temps.
 
 ## Statut du projet
 Ca peut être assez interessant : voir sonarqube, travis, appveyor
