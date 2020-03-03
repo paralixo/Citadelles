@@ -6,7 +6,10 @@ import { GAME_API_PORT } from "@/api/game/constants/game.constants";
 import { DECK, PLAYER } from "@/api/database/constants/collections.constants";
 import {
   MAGICIAN_DISCARD_AND_DRAW,
-  MAGICIAN_SWITCH_HANDS, MAX_BUYABLE_DISTRICTS, MAX_BUYABLE_DISTRICTS_AS_ARCHITECT, NUMBER_OF_DISTRICTS_TO_WIN,
+  MAGICIAN_SWITCH_HANDS,
+  MAX_BUYABLE_DISTRICTS,
+  MAX_BUYABLE_DISTRICTS_AS_ARCHITECT,
+  NUMBER_OF_DISTRICTS_TO_WIN,
   PICK_CARDS,
   PICK_MONEY
 } from "@/api/game/constants/rules.constants";
@@ -58,6 +61,10 @@ import { CardDoesNotExistError } from "@/api/game/constants/errors/card-does-not
 import { PlayerIsNotTheRightCharacterError } from "@/api/game/constants/errors/player-is-not-the-right-character.error";
 import { PowerAlreadyUsedError } from "@/api/game/constants/errors/power-already-used.error";
 import { CannotBuyAnotherDistrictError } from "@/api/game/constants/errors/cannot-buy-another-district.error";
+import {
+  beginningChoice,
+  buyDistrictOrNot
+} from "@/api/game/services/computer.service";
 
 const application = express();
 application.use(express.json());
@@ -317,6 +324,23 @@ application.get("/player/:name/countPoints", async (request: any, response: any)
   response.send({
     success: points
   });
+});
+
+application.get("/player/:name/computer/choiceBeginning", async (request:any, response:any) => {
+  const playerName: string = request.params.name;
+  const player: IPlayerData = await getPlayerOnName(playerName);
+  await beginningChoice(player);
+  response.send({
+    success: true
+  });
+});
+
+application.get("/player/:name/computer/buyDistrict", async (request:any, response:any) => {
+  const playerName: string = request.params.name;
+  const player: IPlayerData = await getPlayerOnName(playerName);
+  const success : IResponseData = await buyDistrictOrNot(player);
+
+  response.send(success);
 });
 
 application.listen(GAME_API_PORT, () => {
