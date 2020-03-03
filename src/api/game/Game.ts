@@ -60,7 +60,10 @@ import { NotEnoughtMoneyError } from "@/api/game/constants/errors/not-enougth-mo
 import { CardDoesNotExistError } from "@/api/game/constants/errors/card-does-not-exist.error";
 import { PlayerIsNotTheRightCharacterError } from "@/api/game/constants/errors/player-is-not-the-right-character.error";
 import { PowerAlreadyUsedError } from "@/api/game/constants/errors/power-already-used.error";
-
+import {
+  choiceBeginning,
+  buyDistrictOrNot
+} from "@/api/game/services/ordi.service"
 const application = express();
 application.use(express.json());
 
@@ -304,6 +307,24 @@ application.get("/player/:name/countPoints", async (request: any, response: any)
   let points = await getPointsFromColorsDistricts(player) + await getPointsFromDistricts(player) + await getPointsIfBoardSup8(player) + await getPointsIfFinishedFirst(player);
   response.send({
     success: points
+  });
+});
+
+application.get("/player/:name/Computer/ChoiceBeginning", async (request:any, response:any) => {
+  const playerName: string = request.params.name;
+  const player: IPlayerData = await getPlayerOnName(playerName);
+  await choiceBeginning(player);
+  response.send({
+    success: true
+  });
+});
+
+application.get("/player/:name/Computer/BuyDistrict", async (request:any, response:any) => {
+  const playerName: string = request.params.name;
+  const player: IPlayerData = await getPlayerOnName(playerName);
+  await buyDistrictOrNot(player);
+  response.send({
+    success: true
   });
 });
 
