@@ -185,6 +185,7 @@ application.get("/player/:name/startTurn", async (request: any, response: any) =
     response.send(PlayerDoesNotExistError);
     return;
   }
+  await updateFieldOfPlayer(playerName, "buyedDistricts", 0);
 
   const playerHasBeenTargeted: boolean = player.targetedBy !== "";
   if (playerHasBeenTargeted) {
