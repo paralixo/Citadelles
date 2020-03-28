@@ -20,17 +20,17 @@ protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: tru
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ width: 1920,
-    height: 1080,
+  win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false
     } });
+  win.setMenuBarVisibility(false);
+  win.maximize();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
-    if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol("app");
     // Load the index.html when not in development
