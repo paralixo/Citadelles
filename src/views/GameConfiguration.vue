@@ -30,7 +30,7 @@ export default class GameConfiguration extends Vue {
   public playerIndex: number = 1;
 
   public newPlayer (isHuman: boolean = false) {
-    if (this.players.length < 8) {
+    if (this.players.length < 7) {
       this.players.push({
         name: `Joueur ${this.playerIndex}`,
         isHuman

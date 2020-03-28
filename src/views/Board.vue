@@ -1,14 +1,8 @@
 <template>
-<div>
-  <MenuButton href="#/gameConfiguration">Un joueur</MenuButton>
-      <Playground><img class="playground" src="../assets/images/playground.png" alt=""></Playground>
-      <div class="hand">
-
-        <Card class="card" v-for="(card, key) of cards" :key="key" ><img :src="card" alt=""></Card>
-      </div>
-      <div class="coin">
-        <Coin><img class="coinSprite" src="../assets/images/piece.jpg" alt=""></Coin>
-      </div>
+  <div>
+    <StatusManager v-model="players"/>
+    <MenuButton href="#/gameConfiguration">Retour</MenuButton>
+    <MenuButton @click="fetchPlayers">Refresh</MenuButton>
   </div>
 </template>
 
@@ -18,13 +12,26 @@ import Card from "@/components/Card.vue";
 import Coin from "@/components/Coin.vue";
 import Playground from "@/components/Playground.vue";
 import MenuButton from "@/components/MenuButton.vue";
+import { getOptions } from "@/views/services/request-options.service";
+import { IRequestOptions } from "../../tests/unit/api/database/interfaces/RequestOptions.interface";
+import request from "request-promise";
+import StatusManager from "@/components/StatusManager.vue";
 
 @Component({
-  components: { Card, Coin, Playground, MenuButton }
+  components: { Card, Coin, Playground, MenuButton, StatusManager }
 })
 export default class Board extends Vue {
-  public nbrPlayer : number = 2;
-  public cards : any[] = [require("../assets/cards/roi.jpg"), require("../assets/cards/roi.jpg"), require("../assets/cards/roi.jpg")];
+  public players: any[] = [];
+
+  public async fetchPlayers () {
+    const options: IRequestOptions = getOptions("/Player", {}, true);
+    let response: any = await request.get(options);
+    this.players = response.data;
+  }
+
+  async mounted () {
+    this.fetchPlayers();
+  }
 }
 </script>
 
