@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { Component, Model, Prop, Vue, Watch } from "vue-property-decorator";
-import Status from "@/components/Status.vue";
-import { IStatus } from "@/components/interfaces/status.interface";
+import Status from "@/components/status/Status.vue";
+import { IStatus } from "@/components/status/status.interface";
 
 @Component({
   components: { Status }

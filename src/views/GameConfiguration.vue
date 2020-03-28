@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MenuButton from "@/components/MenuButton.vue";
+import MenuButton from "@/components/gui/MenuButton.vue";
 import { getOptions } from "@/views/services/request-options.service";
 import { IResponseData } from "@/api/database/interfaces/ResponseData.interface";
 import request from "request-promise";

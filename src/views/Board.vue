@@ -3,28 +3,28 @@
     <StatusManager v-model="players"/>
     <MenuButton href="#/gameConfiguration">Retour</MenuButton>
     <MenuButton @click="fetchPlayers">Refresh</MenuButton>
-    <div class="districtZone">
-      <Card class="card" :card="districtZoneData[index]" v-for="(card, index) of districtZoneImage" :key="index" ><img :src="card" alt=""></Card>
-    </div>
-    <div class="hand">
-      <Card class="card" :card="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></Card>
-    </div>
+    <Playground v-model="players"/>
+<!--    <div class="districtZone">-->
+<!--      <Card class="card" :card="districtZoneData[index]" v-for="(card, index) of districtZoneImage" :key="index" ><img :src="card" alt=""></Card>-->
+<!--    </div>-->
+<!--    <div class="hand">-->
+<!--      <Card class="card" :card="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></Card>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Card from "@/components/Card.vue";
-import Coin from "@/components/Coin.vue";
-import Playground from "@/components/Playground.vue";
-import MenuButton from "@/components/MenuButton.vue";
+import Card from "@/components/playground/card/Card.vue";
+import Playground from "@/components/playground/Playground.vue";
+import MenuButton from "@/components/gui/MenuButton.vue";
 import { getOptions } from "@/views/services/request-options.service";
 import { IRequestOptions } from "../../tests/unit/api/database/interfaces/RequestOptions.interface";
 import request from "request-promise";
-import StatusManager from "@/components/StatusManager.vue";
+import StatusManager from "@/components/status/StatusManager.vue";
 
 @Component({
-  components: { Card, Coin, Playground, MenuButton, StatusManager }
+  components: { Card, Playground, MenuButton, StatusManager }
 })
 export default class Board extends Vue {
   public handImages : string[] = [];
@@ -37,8 +37,6 @@ export default class Board extends Vue {
     const options: IRequestOptions = getOptions("/Player", {}, true);
     let response: any = await request.get(options);
     this.players = response.data;
-    this.getHandOfPlayer();
-    this.getDistrictZonePlayer();
   }
 
   public getCurrentPlayer () {

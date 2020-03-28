@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MenuButton from "@/components/MenuButton.vue";
+import MenuButton from "@/components/gui/MenuButton.vue";
 
 @Component({
   components: { MenuButton }
