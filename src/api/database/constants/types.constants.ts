@@ -1,3 +1,3 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-export const OBJECT_ID = mongoose.Schema.Types.ObjectId
+export const OBJECT_ID = mongoose.Schema.Types.ObjectId;

@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
-import { CHARACTER } from "@/api/database/constants/collections.constants"
+import mongoose from "mongoose";
+import { CHARACTER } from "@/api/database/constants/collections.constants";
 
 const characterSchema: mongoose.Schema = new mongoose.Schema({
   name: {
@@ -24,7 +24,7 @@ const characterSchema: mongoose.Schema = new mongoose.Schema({
     required: true,
     unique: false
   }
-})
+});
 
-characterSchema.plugin(require("mongoose-autopopulate"))
-export default mongoose.model(CHARACTER, characterSchema)
+characterSchema.plugin(require("mongoose-autopopulate"));
+export default mongoose.model(CHARACTER, characterSchema);

@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator"
-import Card from "@/components/Card.vue"
-import Coin from "@/components/Coin.vue"
-import Playground from "@/components/Playground.vue"
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Card from "@/components/Card.vue";
+import Coin from "@/components/Coin.vue";
+import Playground from "@/components/Playground.vue";
 
 @Component({
   components: { Card, Coin, Playground }
