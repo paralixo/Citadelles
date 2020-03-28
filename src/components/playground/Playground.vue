@@ -10,33 +10,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Model, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Model, Vue, Watch } from "vue-property-decorator";
 import Card from "@/components/playground/card/Card.vue";
 
 @Component({
   components: { Card }
 })
 export default class Playground extends Vue {
-  @Model() players!: any[];
+  @Model() currentPlayer!: any;
   public handImages : string[] = [];
   public handData : string[] = [];
   public districtZoneImage : string[] = [];
   public districtZoneData : string[] = [];
-  public render: boolean = true;
 
-  @Watch("players")
+  @Watch("currentPlayer")
   public onPlayersChange () {
     this.getHandOfPlayer();
     this.getDistrictZonePlayer();
   }
 
-  public getCurrentPlayer () {
-    return this.players[0];
-  }
-
   public getHandOfPlayer () {
     this.handImages = [];
-    let handPlayer : any[] = this.getCurrentPlayer().hand;
+    let handPlayer : any[] = this.currentPlayer.hand;
     for (const card of handPlayer) {
       this.handImages.push(require("../../assets/images/cards/" + card.image));
       this.handData.push(card);
@@ -45,22 +40,30 @@ export default class Playground extends Vue {
 
   public getDistrictZonePlayer () {
     this.districtZoneImage = [];
-    let districtZone : any[] = this.getCurrentPlayer().board;
+    let districtZone : any[] = this.currentPlayer.board;
     for (const card of districtZone) {
       this.districtZoneImage.push(require("../../assets/images/cards/" + card.image));
       this.districtZoneData.push(card);
-    }
-  }
-
-  created () {
-    if (this.players.length >= 1) {
-      this.getHandOfPlayer();
-      this.getDistrictZonePlayer();
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
+.hand{
+  position: absolute;
+  bottom: 155px;
+  left:30%;
+}
 
+.board {
+  position: absolute;
+  bottom: calc(155px + 180px);
+  left:30%;
+}
+
+.card{
+  display: inline-block;
+  margin-right: 10px
+}
 </style>
