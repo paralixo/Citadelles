@@ -9,5 +9,6 @@ export interface IPlayerData {
   temporary_hand: any[];
   isFinished: boolean;
   targetedBy: string;
+  buyedDistricts: number;
   board: any[];
 }

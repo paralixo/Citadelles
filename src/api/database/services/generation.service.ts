@@ -130,15 +130,15 @@ async function setDatabase (characters: any[]) {
   await clearAll(DISTRICT);
   await clearAll(CHARACTER);
 
-  ALL_TYPES.forEach(async (type) => {
+  for (const type of ALL_TYPES) {
     await create(TYPE, type);
-  });
+  }
 
   await setDistricts();
 
-  characters.forEach(async (character: any) => {
+  for (const character of characters) {
     await create(CHARACTER, character);
-  });
+  }
 }
 
 setDatabase(characters);
