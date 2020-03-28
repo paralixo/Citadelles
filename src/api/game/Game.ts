@@ -63,7 +63,7 @@ import { PowerAlreadyUsedError } from "@/api/game/constants/errors/power-already
 import {
   choiceBeginning,
   buyDistrictOrNot
-} from "@/api/game/services/ordi.service"
+} from "@/api/game/services/ordi.service";
 const application = express();
 application.use(express.json());
 
