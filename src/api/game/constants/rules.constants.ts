@@ -5,3 +5,5 @@ export const PICK_CARDS: number = 1;
 export const MAGICIAN_SWITCH_HANDS: number = 0;
 export const MAGICIAN_DISCARD_AND_DRAW: number = 1;
 export const NUMBER_OF_DISTRICTS_TO_WIN: number = 8;
+export const MAX_BUYABLE_DISTRICTS: number = 1;
+export const MAX_BUYABLE_DISTRICTS_AS_ARCHITECT: number = 3;

@@ -6,7 +6,7 @@ import { GAME_API_PORT } from "@/api/game/constants/game.constants";
 import { DECK, PLAYER } from "@/api/database/constants/collections.constants";
 import {
   MAGICIAN_DISCARD_AND_DRAW,
-  MAGICIAN_SWITCH_HANDS, NUMBER_OF_DISTRICTS_TO_WIN,
+  MAGICIAN_SWITCH_HANDS, MAX_BUYABLE_DISTRICTS, MAX_BUYABLE_DISTRICTS_AS_ARCHITECT, NUMBER_OF_DISTRICTS_TO_WIN,
   PICK_CARDS,
   PICK_MONEY
 } from "@/api/game/constants/rules.constants";
@@ -19,8 +19,8 @@ import {
   getDeckByType
 } from "@/api/game/services/deck.service";
 import {
-  generatePlayers, getPlayerOnCharacter,
-  getPlayerOnName, isTargetable,
+  generatePlayers,
+  getPlayerOnName,
   updateFieldOfPlayer,
   updateFieldsOfPlayer,
   getPointsFromColorsDistricts,
@@ -39,16 +39,13 @@ import {
   startTurnEffects,
   stolenByThief
 } from "@/api/game/services/character.service";
-import { DATABASE_API_SERVER } from "@/api/database/constants/database.constants";
 import {
   ARCHITECT,
   ASSASSIN,
   BISHOP,
   CONDOTTIERI,
-  KING,
   MAGICIAN,
-  THIEF,
-  TRADER
+  THIEF
 } from "@/api/game/constants/character.constant";
 import { PlayerDoesNotExistError } from "@/api/game/constants/errors/player-does-not-exist.error";
 import { CharacterDoesNotExistError } from "@/api/game/constants/errors/character-does-not-exist.error";
@@ -60,6 +57,7 @@ import { NotEnoughtMoneyError } from "@/api/game/constants/errors/not-enougth-mo
 import { CardDoesNotExistError } from "@/api/game/constants/errors/card-does-not-exist.error";
 import { PlayerIsNotTheRightCharacterError } from "@/api/game/constants/errors/player-is-not-the-right-character.error";
 import { PowerAlreadyUsedError } from "@/api/game/constants/errors/power-already-used.error";
+import { CannotBuyAnotherDistrictError } from "@/api/game/constants/errors/cannot-buy-another-district.error";
 
 const application = express();
 application.use(express.json());
@@ -84,12 +82,13 @@ application.get("/player/:name/character/:position", async (request: any, respon
   const chosenCharacterPosition: number = parseInt(request.params.position);
 
   const characterDeck: IDeckData = await getDeckByType(CHARACTER_TYPE);
-  const chosenCharacterId: string = characterDeck.cards[chosenCharacterPosition];
+  const characterId: string = characterDeck.cards[chosenCharacterPosition];
+  const character: ICharacterCardData = await getCharacterById(characterId);
 
-  await updateFieldOfPlayer(playerName, "character_id", chosenCharacterId);
-  await discardFromDeck(characterDeck, chosenCharacterId);
+  await updateFieldOfPlayer(playerName, "character_id", character._id);
+  await discardFromDeck(characterDeck, character._id);
 
-  response.send({ success: true });
+  response.send({ success: true, data: character.name });
 });
 
 application.get("/player/:name/choice/:choice", async (request: any, response: any) => {
@@ -135,6 +134,17 @@ application.get("/player/:name/buy/:choice", async (request: any, response: any)
     response.send(PlayerDoesNotExistError);
     return;
   }
+  const character: ICharacterCardData = await getCharacterById(player.character_id);
+  if (!character) {
+    response.send(CharacterDoesNotExistError);
+    return;
+  }
+  const isArchitect: boolean = character.name === ARCHITECT;
+  if ((!isArchitect && player.buyedDistricts === MAX_BUYABLE_DISTRICTS) ||
+    (isArchitect && player.buyedDistricts === MAX_BUYABLE_DISTRICTS_AS_ARCHITECT)) {
+    response.send(CannotBuyAnotherDistrictError);
+    return;
+  }
   const buyedDistrict: IDistrictCardData = await getDistrictById(player.hand[choice]);
   if (!buyedDistrict) {
     response.send(CardDoesNotExistError);
@@ -149,11 +159,13 @@ application.get("/player/:name/buy/:choice", async (request: any, response: any)
 
   player.hand.splice(choice, 1);
   player.board.push(buyedDistrict._id);
+  player.buyedDistricts++;
 
   await updateFieldsOfPlayer(playerName, [
     { field: "hand", value: player.hand },
     { field: "board", value: player.board },
-    { field: "money", value: player.money }
+    { field: "money", value: player.money },
+    { field: "buyedDistricts", value: player.buyedDistricts }
   ]);
 
   response.send({ success: true });

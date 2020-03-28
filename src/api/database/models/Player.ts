@@ -49,8 +49,14 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
     default: ""
   },
 
+  buyedDistricts: {
+    type: Number,
+    default: 0
+  },
+
   crown: {
-    type: Boolean
+    type: Boolean,
+    default: false
   }
 });
 
