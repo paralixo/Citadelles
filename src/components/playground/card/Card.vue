@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import PurchaseDialogue from "@/components/PurchaseDialogue.vue";
+import PurchaseDialogue from "@/components/playground/card/PurchaseDialog.vue";
 
 @Component({
   components: { PurchaseDialogue }

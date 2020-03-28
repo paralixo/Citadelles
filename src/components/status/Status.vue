@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { Component, Model, Prop, Vue, Watch } from "vue-property-decorator";
-import { IStatus } from "@/components/interfaces/status.interface";
+import { IStatus } from "@/components/status/status.interface";
 import { MILITARY, NOBLE, PRESTIGIOUS, RELIGIOUS, TRADE } from "@/api/database/constants/district-type.constants";
 
 @Component
