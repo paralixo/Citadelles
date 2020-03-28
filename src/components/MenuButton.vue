@@ -1,5 +1,5 @@
 <template>
-    <a :href="href"><slot></slot></a>
+    <a :href="href" @click="$emit('click')"><slot></slot></a>
 </template>
 
 <script lang="ts">
