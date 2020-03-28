@@ -1,5 +1,6 @@
 <template>
 <div>
+  <MenuButton href="#/gameConfiguration">Un joueur</MenuButton>
       <Playground><img class="playground" src="../assets/images/playground.png" alt=""></Playground>
       <div class="hand">
 
@@ -16,9 +17,10 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import Card from "@/components/Card.vue";
 import Coin from "@/components/Coin.vue";
 import Playground from "@/components/Playground.vue";
+import MenuButton from "@/components/MenuButton.vue";
 
 @Component({
-  components: { Card, Coin, Playground }
+  components: { Card, Coin, Playground, MenuButton }
 })
 export default class Board extends Vue {
   public nbrPlayer : number = 2;

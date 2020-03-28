@@ -23,7 +23,8 @@ function createWindow () {
   win = new BrowserWindow({ width: 1920,
     height: 1080,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: false
     } });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

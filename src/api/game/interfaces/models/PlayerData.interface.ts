@@ -10,5 +10,6 @@ export interface IPlayerData {
   isFinished: boolean;
   targetedBy: string;
   buyedDistricts: number;
+  isHuman: boolean;
   board: any[];
 }

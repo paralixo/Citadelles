@@ -54,6 +54,11 @@ const playerSchema: mongoose.Schema = new mongoose.Schema({
     default: 0
   },
 
+  isHuman: {
+    type: Boolean,
+    default: false
+  },
+
   crown: {
     type: Boolean,
     default: false
