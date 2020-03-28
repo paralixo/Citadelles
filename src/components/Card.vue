@@ -1,13 +1,22 @@
 <template>
-    <div>
-        <slot></slot>
+    <div @click="playCard">
+      <slot></slot>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-@Component
+import PurchaseDialogue from "@/components/PurchaseDialogue.vue";
+
+@Component({
+  components: { PurchaseDialogue }
+})
+
 export default class Card extends Vue {
+  @Prop() public card : any;
+  public playCard () {
+    console.log(this.card.name);
+  }
 }
 </script>
 

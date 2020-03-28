@@ -31,7 +31,7 @@
             :key="`noble-${i}`"
             v-for="i in districtsPerType.noble"
             class="dot"
-            style="background-color: yellow">
+            style="background-color: darkorange">
           </span>
         </div>
         <div>

@@ -3,6 +3,12 @@
     <StatusManager v-model="players"/>
     <MenuButton href="#/gameConfiguration">Retour</MenuButton>
     <MenuButton @click="fetchPlayers">Refresh</MenuButton>
+    <div class="districtZone">
+      <Card class="card" :card="districtZoneData[index]" v-for="(card, index) of districtZoneImage" :key="index" ><img :src="card" alt=""></Card>
+    </div>
+    <div class="hand">
+      <Card class="card" :card="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></Card>
+    </div>
   </div>
 </template>
 
@@ -21,16 +27,44 @@ import StatusManager from "@/components/StatusManager.vue";
   components: { Card, Coin, Playground, MenuButton, StatusManager }
 })
 export default class Board extends Vue {
+  public handImages : string[] = [];
+  public handData : string[] = [];
+  public districtZoneImage : string[] = [];
+  public districtZoneData : string[] = [];
   public players: any[] = [];
 
   public async fetchPlayers () {
     const options: IRequestOptions = getOptions("/Player", {}, true);
     let response: any = await request.get(options);
     this.players = response.data;
+    this.getHandOfPlayer();
+    this.getDistrictZonePlayer();
+  }
+
+  public getCurrentPlayer () {
+    return this.players[0];
+  }
+
+  public getHandOfPlayer () {
+    this.handImages = [];
+    let handPlayer : any[] = this.getCurrentPlayer().hand;
+    for (const card of handPlayer) {
+      this.handImages.push(require("../assets/images/cards/" + card.image));
+      this.handData.push(card);
+    }
+  }
+
+  public getDistrictZonePlayer () {
+    this.districtZoneImage = [];
+    let districtZone : any[] = this.getCurrentPlayer().board;
+    for (const card of districtZone) {
+      this.districtZoneImage.push(require("../assets/images/cards/" + card.image));
+      this.districtZoneData.push(card);
+    }
   }
 
   async mounted () {
-    this.fetchPlayers();
+    await this.fetchPlayers();
   }
 }
 </script>
@@ -39,9 +73,14 @@ export default class Board extends Vue {
 
 .hand{
   position: absolute;
-  bottom: -5%;
-  left:35%;
+  bottom: 155px;
+  left:30%;
+}
 
+.districtZone {
+  position: absolute;
+  bottom: calc(155px + 180px);
+  left:30%;
 }
 
 .card{
@@ -52,32 +91,5 @@ export default class Board extends Vue {
 body {
   background-color: grey !important;
   background-image: none ;
-}
-
-.coin{
-  position: absolute;
-  bottom:8%;
-  left: 88%;
-}
-
-.coinSprite{
-  width: 100px;
-  height:100px;
-}
-
-.playground {
-  width: 75%;
-}
-
-.swip-up-enter-active {
-  transition: all .3s ease;
-}
-.swip-up-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.swip-up-enter, .swip-up-leave-to
-/* .swip-up-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
 }
 </style>
