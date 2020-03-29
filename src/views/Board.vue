@@ -1,20 +1,14 @@
 <template>
   <div>
-    <StatusManager v-model="players"/>
+    <StatusManager v-model="players" @show-playground="switchPlayground"/>
     <MenuButton href="#/gameConfiguration">Retour</MenuButton>
-    <MenuButton @click="fetchPlayers">Refresh</MenuButton>
-    <Playground v-model="players"/>
-<!--    <div class="districtZone">-->
-<!--      <Card class="card" :card="districtZoneData[index]" v-for="(card, index) of districtZoneImage" :key="index" ><img :src="card" alt=""></Card>-->
-<!--    </div>-->
-<!--    <div class="hand">-->
-<!--      <Card class="card" :card="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></Card>-->
-<!--    </div>-->
+    <MenuButton @click="refresh">Refresh</MenuButton>
+    <Playground v-model="currentPlayer"/>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Card from "@/components/playground/card/Card.vue";
 import Playground from "@/components/playground/Playground.vue";
 import MenuButton from "@/components/gui/MenuButton.vue";
@@ -27,11 +21,13 @@ import StatusManager from "@/components/status/StatusManager.vue";
   components: { Card, Playground, MenuButton, StatusManager }
 })
 export default class Board extends Vue {
-  public handImages : string[] = [];
-  public handData : string[] = [];
-  public districtZoneImage : string[] = [];
-  public districtZoneData : string[] = [];
   public players: any[] = [];
+  public currentPlayer: any = {};
+
+  public async refresh () {
+    await this.fetchPlayers();
+    this.switchPlayground(this.currentPlayer.name);
+  }
 
   public async fetchPlayers () {
     const options: IRequestOptions = getOptions("/Player", {}, true);
@@ -39,53 +35,18 @@ export default class Board extends Vue {
     this.players = response.data;
   }
 
-  public getCurrentPlayer () {
-    return this.players[0];
-  }
-
-  public getHandOfPlayer () {
-    this.handImages = [];
-    let handPlayer : any[] = this.getCurrentPlayer().hand;
-    for (const card of handPlayer) {
-      this.handImages.push(require("../assets/images/cards/" + card.image));
-      this.handData.push(card);
-    }
-  }
-
-  public getDistrictZonePlayer () {
-    this.districtZoneImage = [];
-    let districtZone : any[] = this.getCurrentPlayer().board;
-    for (const card of districtZone) {
-      this.districtZoneImage.push(require("../assets/images/cards/" + card.image));
-      this.districtZoneData.push(card);
-    }
+  public switchPlayground (playerName: string) {
+    this.currentPlayer = this.players.find(player => player.name === playerName);
   }
 
   async mounted () {
     await this.fetchPlayers();
+    this.switchPlayground(this.players[0].name);
   }
 }
 </script>
 
 <style lang="css">
-
-.hand{
-  position: absolute;
-  bottom: 155px;
-  left:30%;
-}
-
-.districtZone {
-  position: absolute;
-  bottom: calc(155px + 180px);
-  left:30%;
-}
-
-.card{
-  display: inline-block;
-  margin-right: 10px
-}
-
 body {
   background-color: grey !important;
   background-image: none ;

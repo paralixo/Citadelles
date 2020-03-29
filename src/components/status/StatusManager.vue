@@ -1,6 +1,11 @@
 <template>
-  <div v-if="render">
-    <Status :id="`status${index}`" v-for="(player, index) in players" :key="index" :status="getStatusOfPlayer(player)"/>
+  <div>
+    <Status
+      @show-playground="switchPlayground"
+      :id="`status${index}`"
+      v-for="(player, index) in players"
+      :key="index"
+      :status="getStatusOfPlayer(player)"/>
   </div>
 </template>
 
@@ -14,19 +19,6 @@ import { IStatus } from "@/components/status/status.interface";
 })
 export default class StatusManager extends Vue {
   @Model() players!: any;
-  public render: boolean = true;
-
-  @Watch("players")
-  public onPlayersChange () {
-    this.rerender();
-  }
-
-  public rerender () {
-    this.render = false;
-    this.$nextTick(() => {
-      this.render = true;
-    });
-  }
 
   public getStatusOfPlayer (player: any): IStatus {
     const characterName: string = player.character_id === null ? "???" : player.character_id.name;
@@ -39,8 +31,8 @@ export default class StatusManager extends Vue {
     };
   }
 
-  created () {
-    this.rerender();
+  public switchPlayground (playerName: string) {
+    this.$emit("show-playground", playerName);
   }
 }
 </script>

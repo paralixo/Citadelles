@@ -1,5 +1,5 @@
 <template>
-  <div class="status-window">
+  <div class="status-window" @click="emitShowPlayground">
     <h1>{{status.name}}</h1>
     <div id="status-parameters">
       <div class="status-panel">
@@ -110,6 +110,10 @@ export default class Status extends Vue {
     }
 
     return districtsPerType;
+  }
+
+  public emitShowPlayground () {
+    this.$emit("show-playground", this.status.name);
   }
 
   created () {
