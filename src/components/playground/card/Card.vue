@@ -1,21 +1,35 @@
 <template>
+  <div>
     <div @click="playCard">
       <slot></slot>
     </div>
+    <purchase-dialog v-model="card" v-if="showDialog" @close="closeDialog" @buy="buyDistrict"></purchase-dialog>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import PurchaseDialogue from "@/components/playground/card/PurchaseDialog.vue";
+import { Component, Model, Prop, Vue } from "vue-property-decorator";
+import PurchaseDialog from "@/components/playground/card/PurchaseDialog.vue";
 
 @Component({
-  components: { PurchaseDialogue }
+  components: { PurchaseDialog }
 })
 
 export default class Card extends Vue {
-  @Prop() public card : any;
+  @Model() public card : any;
+
+  public showDialog: boolean = false;
+  public closeDialog () {
+    this.showDialog = false;
+  }
+
+  public buyDistrict () {
+    this.$emit("buy", this.card);
+    this.closeDialog();
+  }
+
   public playCard () {
-    console.log(this.card.name);
+    this.showDialog = true;
   }
 }
 </script>
