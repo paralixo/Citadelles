@@ -48,7 +48,6 @@ export const buyDistrictOrNot = async (player:IPlayerData) : Promise<IResponseDa
     if (player.board.length === 0) {
       await requestBuy(playableCardsIndexes[0], playerName);
     } else {
-      console.log(playableCardsIndexes);
       const labelsOfCards: string[] = player.board.map(card => card.type.label);
       for (const indexPlayableCard of playableCardsIndexes) {
         let labelCard : string = player.hand[indexPlayableCard].type.label;

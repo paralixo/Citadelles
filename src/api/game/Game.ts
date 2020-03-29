@@ -84,6 +84,12 @@ application.get("/initialize", async (request: any, response: any) => {
   response.send({ success: true });
 });
 
+application.get("/generateCharacters", async (request: any, response: any) => {
+  await database.clearAll(DECK, { type: CHARACTER_TYPE });
+  await generateDeck(CHARACTER_TYPE);
+  response.send({ success: true });
+});
+
 application.get("/player/:name/character/:position", async (request: any, response: any) => {
   const playerName: string = request.params.name;
   const chosenCharacterPosition: number = parseInt(request.params.position);

@@ -99,6 +99,7 @@ async function setDistricts () {
 
     { name: "Cour des miracles", image: "cour_miracle.jpg", description: "Pour le décompte final des points, la cour des miracles est considérée comme un quartier de la couleur de votre choix. Vous ne pouvez pas utilisez cette capacité si vous avez construit la cour des miracles au dernier tour de jeu.", price: 2, type: typeId.prestige },
     { name: "Donjon", image: "donjon.jpg", description: "Le Donjon ne peut pas être détruit par le Condottière.", price: 3, type: typeId.prestige },
+    { name: "Donjon", image: "donjon.jpg", description: "Le Donjon ne peut pas être détruit par le Condottière.", price: 3, type: typeId.prestige },
     { name: "Laboratoire", image: "laboratoire.jpg", description: "Une fois par tour, vous pouvez vous défausser d'une carte quartier de votre main et recevoir une pièce d'or en contrepartie", price: 5, type: typeId.prestige },
     { name: "Manufacture", image: "manufacture.jpg", description: "Une fois par tour, vous pouvez payer trois pièces d'or pour piocher trois cartes.", price: 5, type: typeId.prestige },
     { name: "Observatoire", image: "observatoire.jpg", description: "Si vous choisissez de piocher des cartes au début de votre tour, vous en piochez trois, en choisissez une et défaussez les deux autres.", price: 5, type: typeId.prestige },
