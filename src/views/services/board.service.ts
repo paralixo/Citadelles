@@ -1,0 +1,25 @@
+import { IRequestOptions } from "../../../tests/unit/api/database/interfaces/RequestOptions.interface";
+import { getOptions } from "@/views/services/request-options.service";
+import request from "request-promise";
+
+export async function computerChooseCharacter (player: any) {
+  const options: IRequestOptions = getOptions(`/player/${player.name}/character/0`, {});
+  await request.get(options);
+}
+
+export async function computerPlayTurn (player: any) {
+  let options: IRequestOptions = getOptions(`/player/${player.name}/computer/choiceBeginning`, {});
+  await request.get(options);
+  options = getOptions(`/player/${player.name}/computer/buyDistrict`, {});
+  await request.get(options);
+}
+
+export async function fetchCharacterName (cardsIds: string[]): Promise<any[]> {
+  let characters: any[] = [];
+  for (const cardId of cardsIds) {
+    const options: IRequestOptions = getOptions("/Character", { _id: cardId }, true);
+    let response: any = await request.get(options);
+    characters.push(response.data[0]);
+  }
+  return characters;
+}

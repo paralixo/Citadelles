@@ -78,7 +78,6 @@ export const startTurnEffects = async (character: ICharacterCardData, request: a
       updateFieldOfPlayer(playerName, "hand", player.hand);
       break;
     case CONDOTTIERI:
-      // TODO: selectionner un quartier d'un joueur
       const areMilitaryDistricts: boolean[] = player.board.map(district => district.type.label === "Soldatesque");
       const numberOfMilitaryDistricts: number = areMilitaryDistricts.filter(Boolean).length;
       await updateFieldOfPlayer(playerName, "money", player.money + numberOfMilitaryDistricts);

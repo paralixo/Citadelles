@@ -198,15 +198,12 @@ application.get("/player/:name/startTurn", async (request: any, response: any) =
     await updateFieldOfPlayer(player.name, "targetedBy", "");
     switch (player.targetedBy) {
       case ASSASSIN:
-        response.send({ success: true, message: "Le tour du joueur est passé (assassiné)" });
-        break;
+        response.send({ success: false, message: "Le tour du joueur est passé (assassiné)" });
+        return;
       case THIEF:
         player = await stolenByThief(player);
         break;
-      case MAGICIAN:
-        break;
       default:
-        response.send(CharacterDoesNotExistError);
         break;
     }
   }
