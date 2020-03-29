@@ -4,13 +4,19 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h1>Choisis une cible</h1>
+            <h1>Scores</h1>
           </div>
 
           <div class="modal-body">
-            <template v-for="(character, key) of characters" >
-                <img @click="selectCharacter(character.name)" :key="key" :src="require(`../../assets/images/cards/${character.image}`)" alt="">
-            </template>
+            <div :key="key" v-for="(score, key) of scores" >
+              {{ score.playerName }} : {{ score.points }} points
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <MenuButton href="#/gameConfiguration">
+              Quitter
+            </MenuButton>
           </div>
         </div>
       </div>
@@ -20,27 +26,12 @@
 
 <script lang="ts">
 import { Component, Model, Prop, Vue } from "vue-property-decorator";
-import { IRequestOptions } from "../../../tests/unit/api/database/interfaces/RequestOptions.interface";
-import { getOptions } from "@/views/services/request-options.service";
-import request from "request-promise";
-
-@Component
-export default class TargetDialog extends Vue {
-  public characters: any[] = [];
-
-  public async allCharacters () {
-    const options: IRequestOptions = getOptions("/Character", {}, true);
-    let response: any = await request.get(options);
-    this.characters = response.data;
-  }
-
-  public async mounted () {
-    await this.allCharacters();
-  }
-
-  public selectCharacter (characterName: string) {
-    this.$emit("select", characterName);
-  }
+import MenuButton from "@/components/gui/MenuButton.vue";
+  @Component({
+    components: { MenuButton }
+  })
+export default class ScoreDialog extends Vue {
+    @Model() public scores!: any[];
 }
 </script>
 
@@ -63,7 +54,7 @@ export default class TargetDialog extends Vue {
   }
 
   .modal-container {
-    width: 900px;
+    width: 500px;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
@@ -80,7 +71,6 @@ export default class TargetDialog extends Vue {
 
   .modal-body {
     margin: 20px 0;
-    display: flex;
   }
 
   .modal-default-button {

@@ -1,13 +1,13 @@
 <template>
   <div>
     <StatusManager v-model="players" @show-playground="switchPlayground"/>
-    <MenuButton href="#/gameConfiguration">Retour</MenuButton>
+    <MenuButton href="#/gameConfiguration">Quitter</MenuButton>
     <MenuButton @click="endTurn">Tour suivant</MenuButton>
-    <MenuButton @click="refresh">Refresh</MenuButton>
     <Playground v-model="currentPlayer" @buy="refresh"/>
     <CharacterPickerDialog v-if="renderCharacterDialog" v-model="characterDeck" :current-player-name="players[0].name" @select="characterIsSelected"/>
     <StartTurnDialog v-if="renderStartTurnDialog" v-model="players[0]" @draw="refresh" @choice-over="startChoiceIsOver"/>
     <TargetDialog ref="target" v-if="renderTargetDialog" @select="selectATarget"/>
+    <ScoreDialog v-if="renderScoreDialog" v-model="scores"/>
   </div>
 </template>
 
@@ -33,10 +33,16 @@ import {
   TRADER
 } from "@/api/game/constants/character.constant";
 import { IResponseData } from "@/api/database/interfaces/ResponseData.interface";
-import { computerChooseCharacter, computerPlayTurn, fetchCharacterName } from "@/views/services/board.service";
+import {
+  computerChooseCharacter,
+  computerPlayTurn,
+  didSomeoneFinished,
+  fetchCharacterName, getScores
+} from "@/views/services/board.service";
+import ScoreDialog from "@/components/gui/ScoreDialog.vue";
 
 @Component({
-  components: { TargetDialog, Playground, MenuButton, StatusManager, CharacterPickerDialog, StartTurnDialog }
+  components: { ScoreDialog, TargetDialog, Playground, MenuButton, StatusManager, CharacterPickerDialog, StartTurnDialog }
 })
 export default class Board extends Vue {
   public players: any[] = [];
@@ -45,7 +51,10 @@ export default class Board extends Vue {
   public renderCharacterDialog: boolean = false;
   public renderStartTurnDialog: boolean = false;
   public renderTargetDialog: boolean = false;
+  public renderScoreDialog: boolean = false;
   public unpassedRoundPlayers: any[] = [];
+  public isGameOver: boolean = false;
+  public scores: any[] = [];
 
   async mounted () {
     await this.fetchPlayers();
@@ -148,7 +157,14 @@ export default class Board extends Vue {
   public async endTurn () {
     await this.continueGameRoundTable();
     await this.refresh();
-    await this.startCharacterRoundTable();
+    this.isGameOver = await didSomeoneFinished(this.players);
+    if (!this.isGameOver) {
+      await this.startCharacterRoundTable();
+    } else {
+      await this.refresh();
+      this.scores = await getScores(this.players);
+      this.renderScoreDialog = true;
+    }
   }
 
   public async startTurn (player: any, body: any = {}) {

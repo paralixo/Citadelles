@@ -38,7 +38,7 @@ export const buyDistrictOrNot = async (player:IPlayerData) : Promise<IResponseDa
   player = await getPlayerOnName(playerName);
   let playableCardsIndexes : number[] = [];
 
-  if (player.money > minimumPrice) {
+  if (player.money >= minimumPrice) {
     player.hand.forEach(card => {
       if (player.money >= card.price) {
         playableCardsIndexes.push(player.hand.indexOf(card));

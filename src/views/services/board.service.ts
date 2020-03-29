@@ -23,3 +23,29 @@ export async function fetchCharacterName (cardsIds: string[]): Promise<any[]> {
   }
   return characters;
 }
+
+export async function didSomeoneFinished (players: any[]): Promise<boolean> {
+  for (const player of players) {
+    const options: IRequestOptions = getOptions(`/player/${player.name}/victory`, {});
+    const response: any = await request.get(options);
+    if (response.success) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export async function getScores (players: any[]): Promise<any[]> {
+  let scores: any[] = [];
+  for (const player of players) {
+    const options: IRequestOptions = getOptions(`/player/${player.name}/countPoints`, {});
+    const response: any = await request.get(options);
+    const score: any = {
+      playerName: player.name,
+      points: response.success
+    };
+    scores.push(score);
+  }
+  // @ts-ignore
+  return scores.sort((scoreA, scoreB) => scoreA.points > scoreB.points);
+}
