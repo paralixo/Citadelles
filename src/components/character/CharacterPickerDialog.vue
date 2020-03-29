@@ -32,7 +32,7 @@ import CharacterDialog from "@/components/character/CharacterDialog.vue";
   })
 export default class CharacterPickerDialog extends Vue {
     @Model() public characters: any;
-    @Prop() public currentPlayerName: string = "";
+    @Prop() public currentPlayerName!: string;
     public selectedCharacter: any = {};
     public showCharacterDescription: boolean = false;
 

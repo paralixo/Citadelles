@@ -3,8 +3,8 @@ import { IRequestOptions } from "../../../../tests/unit/api/database/interfaces/
 import { DATABASE_API_SERVER } from "@/api/database/constants/database.constants";
 
 class DatabaseService {
-  clearAll (modelName: string) {
-    const options: IRequestOptions = this.getRequestOptions(modelName);
+  clearAll (modelName: string, body: any = {}) {
+    const options: IRequestOptions = this.getRequestOptions(modelName, body);
     return request.delete(options);
   }
 
