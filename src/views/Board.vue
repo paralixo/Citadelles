@@ -3,7 +3,7 @@
     <StatusManager v-model="players" @show-playground="switchPlayground"/>
     <MenuButton href="#/gameConfiguration">Retour</MenuButton>
     <MenuButton @click="refresh">Refresh</MenuButton>
-    <Playground v-model="currentPlayer"/>
+    <Playground v-model="currentPlayer" @buy="refresh"/>
   </div>
 </template>
 
