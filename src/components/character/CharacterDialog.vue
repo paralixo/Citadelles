@@ -1,4 +1,3 @@
-import request from "request-promise";
 <template>
   <transition name="modal">
     <div class="modal-mask">
