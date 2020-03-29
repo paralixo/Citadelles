@@ -7,6 +7,7 @@
     <Playground v-model="currentPlayer" @buy="refresh"/>
     <CharacterPickerDialog v-if="renderCharacterDialog" v-model="characterDeck" :current-player-name="players[0].name" @select="characterIsSelected"/>
     <StartTurnDialog v-if="renderStartTurnDialog" v-model="players[0]" @draw="refresh" @choice-over="startChoiceIsOver"/>
+    <TargetDialog ref="target" v-if="renderTargetDialog" @select="selectATarget"/>
   </div>
 </template>
 
@@ -20,9 +21,22 @@ import request from "request-promise";
 import StatusManager from "@/components/status/StatusManager.vue";
 import CharacterPickerDialog from "@/components/character/CharacterPickerDialog.vue";
 import StartTurnDialog from "@/components/gui/StartTurnDialog.vue";
+import TargetDialog from "@/components/character/TargetDialog.vue";
+import {
+  ARCHITECT,
+  ASSASSIN,
+  BISHOP,
+  CONDOTTIERI,
+  KING,
+  MAGICIAN,
+  THIEF,
+  TRADER
+} from "@/api/game/constants/character.constant";
+import { IResponseData } from "@/api/database/interfaces/ResponseData.interface";
+import { computerChooseCharacter, computerPlayTurn, fetchCharacterName } from "@/views/services/board.service";
 
 @Component({
-  components: { Playground, MenuButton, StatusManager, CharacterPickerDialog, StartTurnDialog }
+  components: { TargetDialog, Playground, MenuButton, StatusManager, CharacterPickerDialog, StartTurnDialog }
 })
 export default class Board extends Vue {
   public players: any[] = [];
@@ -30,6 +44,7 @@ export default class Board extends Vue {
   public characterDeck: any[] = [];
   public renderCharacterDialog: boolean = false;
   public renderStartTurnDialog: boolean = false;
+  public renderTargetDialog: boolean = false;
   public unpassedRoundPlayers: any[] = [];
 
   async mounted () {
@@ -45,8 +60,8 @@ export default class Board extends Vue {
 
   public async fetchPlayers () {
     const options: IRequestOptions = getOptions("/Player", {}, true);
-    let response: any = await request.get(options);
-    this.players = response.data;
+    const response: IResponseData = await request.get(options);
+    this.players = response.data as any;
   }
 
   public switchPlayground (playerName: string) {
@@ -55,24 +70,14 @@ export default class Board extends Vue {
 
   public async generateCharacterDeck () {
     const options: IRequestOptions = getOptions("/generateCharacters", {});
-    let response: any = await request.get(options);
+    await request.get(options);
     await this.fetchCharacterDeck();
   }
 
   public async fetchCharacterDeck () {
     const options: IRequestOptions = getOptions("/Deck", { type: "character" }, true);
-    let response: any = await request.get(options);
-    this.characterDeck = await this.fetchCharacterName(response.data[0].cards);
-  }
-
-  public async fetchCharacterName (cardsIds: string[]): Promise<any[]> {
-    let characters: any[] = [];
-    for (const cardId of cardsIds) {
-      const options: IRequestOptions = getOptions("/Character", { _id: cardId }, true);
-      let response: any = await request.get(options);
-      characters.push(response.data[0]);
-    }
-    return characters;
+    const response: any = await request.get(options);
+    this.characterDeck = await fetchCharacterName(response.data[0].cards);
   }
 
   public async startCharacterRoundTable () {
@@ -86,14 +91,14 @@ export default class Board extends Vue {
         this.renderCharacterDialog = true;
         return;
       } else {
-        await this.computerChooseCharacter(player);
+        await computerChooseCharacter(player);
       }
     }
   }
 
   public async continueCharacterRoundTable () {
     for (const player of this.unpassedRoundPlayers) {
-      await this.computerChooseCharacter(player);
+      await computerChooseCharacter(player);
     }
     await this.refresh();
   }
@@ -105,33 +110,37 @@ export default class Board extends Vue {
     await this.startGameRoundTable();
   }
 
-  public async computerChooseCharacter (player: any) {
-    const options: IRequestOptions = getOptions(`/player/${player.name}/character/0`, {});
-    let response: any = await request.get(options);
-  }
-
   public async startGameRoundTable () {
     let orderedPlayers: any[] = JSON.parse(JSON.stringify(this.players));
     orderedPlayers.sort((a, b) => (a.character_id.index > b.character_id.index) ? 1 : -1);
     this.unpassedRoundPlayers = JSON.parse(JSON.stringify(orderedPlayers));
     for (const player of orderedPlayers) {
       this.unpassedRoundPlayers.shift();
-      await this.startTurn(player);
       if (player.isHuman) {
-        this.renderStartTurnDialog = true;
+        if (player.character_id.name === THIEF || player.character_id.name === ASSASSIN) {
+          this.renderTargetDialog = true;
+        } else {
+          await this.startTurn(player);
+          this.renderStartTurnDialog = true;
+        }
         await this.refresh();
         return;
       } else {
-        await this.computerPlayTurn(player);
-        await this.refresh();
+        const response: any = await this.startTurn(player);
+        if (response.success) {
+          await computerPlayTurn(player);
+          await this.refresh();
+        }
       }
     }
   }
 
   public async continueGameRoundTable () {
     for (const player of this.unpassedRoundPlayers) {
-      await this.startTurn(player);
-      await this.computerPlayTurn(player);
+      const response: any = await this.startTurn(player);
+      if (response.success) {
+        await computerPlayTurn(player);
+      }
     }
     await this.refresh();
   }
@@ -142,22 +151,28 @@ export default class Board extends Vue {
     await this.startCharacterRoundTable();
   }
 
-  public async startTurn (player: any) {
-    const options: IRequestOptions = getOptions(`/player/${player.name}/startTurn`, {});
+  public async startTurn (player: any, body: any = {}) {
+    if ((player.character_id.name === THIEF || player.character_id.name === ASSASSIN) && !player.isHuman) {
+      const characters: string[] = [ CONDOTTIERI, ARCHITECT, TRADER, BISHOP, KING, MAGICIAN, THIEF, ASSASSIN ];
+      const target: string = characters[Math.floor(Math.random() * characters.length)];
+      body = { target };
+    }
+    const options: IRequestOptions = getOptions(`/player/${player.name}/startTurn`, body);
     const response: any = await request.get(options);
     await this.refresh();
-  }
-
-  public async computerPlayTurn (player: any) {
-    let options: IRequestOptions = getOptions(`/player/${player.name}/computer/choiceBeginning`, {});
-    let response: any = await request.get(options);
-    options = getOptions(`/player/${player.name}/computer/buyDistrict`, {});
-    response = await request.get(options);
+    return response;
   }
 
   public startChoiceIsOver () {
     this.refresh();
     this.renderStartTurnDialog = false;
+  }
+
+  public async selectATarget (targetName: string) {
+    const humanPlayer = this.players.filter((player) => player.isHuman)[0];
+    await this.startTurn(humanPlayer, { target: targetName });
+    this.renderTargetDialog = false;
+    this.renderStartTurnDialog = true;
   }
 }
 </script>
