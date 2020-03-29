@@ -110,9 +110,9 @@ async function setDistricts () {
     { name: "Dracoport", image: "dracoport.jpg", description: "Cette réalisation de prestige (on n'a pas vu de dragon dans le Royaume depuis bientôt mille ans) coûte six pièces d'or à bâtir mais vaut huit points dans le décompte de fin de partie.", price: 6, type: typeId.prestige }
   ];
 
-  districts.forEach(async (district: object) => {
+  for (const district of districts) {
     await create(DISTRICT, district);
-  });
+  }
 }
 
 const characters = [
