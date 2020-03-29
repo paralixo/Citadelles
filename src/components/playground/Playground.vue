@@ -6,7 +6,7 @@
       </div>
       <div v-if="render" class="hand">
         <h1>Main</h1>
-        <District @buy="buyDistrict" class="card" v-model="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></District>
+        <District action-name="Acheter" @buy="buyDistrict" class="card" v-model="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></District>
       </div>
     </div>
 </template>

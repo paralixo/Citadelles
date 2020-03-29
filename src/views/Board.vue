@@ -5,7 +5,8 @@
     <MenuButton @click="endTurn">Tour suivant</MenuButton>
     <MenuButton @click="refresh">Refresh</MenuButton>
     <Playground v-model="currentPlayer" @buy="refresh"/>
-    <CharacterPickerDialog v-if="renderCharacterDialog" v-model="characterDeck" :current-player-name="currentPlayer.name" @select="characterIsSelected"/>
+    <CharacterPickerDialog v-if="renderCharacterDialog" v-model="characterDeck" :current-player-name="players[0].name" @select="characterIsSelected"/>
+    <StartTurnDialog v-if="renderStartTurnDialog" v-model="players[0]" @draw="refresh" @choice-over="startChoiceIsOver"/>
   </div>
 </template>
 
@@ -18,15 +19,17 @@ import { IRequestOptions } from "../../tests/unit/api/database/interfaces/Reques
 import request from "request-promise";
 import StatusManager from "@/components/status/StatusManager.vue";
 import CharacterPickerDialog from "@/components/character/CharacterPickerDialog.vue";
+import StartTurnDialog from "@/components/gui/StartTurnDialog.vue";
 
 @Component({
-  components: { Playground, MenuButton, StatusManager, CharacterPickerDialog }
+  components: { Playground, MenuButton, StatusManager, CharacterPickerDialog, StartTurnDialog }
 })
 export default class Board extends Vue {
   public players: any[] = [];
   public currentPlayer: any = {};
   public characterDeck: any[] = [];
   public renderCharacterDialog: boolean = false;
+  public renderStartTurnDialog: boolean = false;
   public unpassedRoundPlayers: any[] = [];
 
   async mounted () {
@@ -115,6 +118,7 @@ export default class Board extends Vue {
       this.unpassedRoundPlayers.shift();
       await this.startTurn(player);
       if (player.isHuman) {
+        this.renderStartTurnDialog = true;
         await this.refresh();
         return;
       } else {
@@ -149,6 +153,11 @@ export default class Board extends Vue {
     let response: any = await request.get(options);
     options = getOptions(`/player/${player.name}/computer/buyDistrict`, {});
     response = await request.get(options);
+  }
+
+  public startChoiceIsOver () {
+    this.refresh();
+    this.renderStartTurnDialog = false;
   }
 }
 </script>

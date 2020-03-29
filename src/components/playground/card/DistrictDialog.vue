@@ -19,8 +19,8 @@
             <button @click="$emit('close')">
               Annuler
             </button>
-            <button @click="$emit('buy')">
-                Acheter
+            <button @click="$emit('action')">
+                {{ actionName }}
               </button>
           </div>
         </div>
@@ -30,11 +30,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Model, Vue } from "vue-property-decorator";
+import { Component, Model, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class PurchaseDialog extends Vue {
+export default class DistrictDialog extends Vue {
   @Model() public card: any;
+  @Prop() public actionName!: string;
 
   public get getDescription () {
     return this.card.description ? this.card.description : "aucune";
