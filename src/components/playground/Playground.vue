@@ -45,9 +45,8 @@ export default class Playground extends Vue {
 
   public async buyDistrict (card: any) {
     const cardIndex: number = this.handData.findIndex((handCard) => handCard === card);
-    const options: IRequestOptions = getOptions(`/player/${this.currentPlayer.name}/buy/${cardIndex}`, {});
-    let response: any = await request.get(options);
-    // TODO: verify response
+    let options: IRequestOptions = getOptions(`/player/${this.currentPlayer.name}/buy/${cardIndex}`, {});
+    await request.get(options);
     this.$emit("buy");
   }
 
