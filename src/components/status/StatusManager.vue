@@ -40,6 +40,7 @@ export default class StatusManager extends Vue {
 <style scoped>
 .status-window {
   position: absolute;
+  z-index: 2;
 }
 #status0 {
   bottom: 0px;
