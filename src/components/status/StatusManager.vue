@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Model, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Model, Vue } from "vue-property-decorator";
 import Status from "@/components/status/Status.vue";
 import { IStatus } from "@/components/status/status.interface";
 
