@@ -1,27 +1,26 @@
+import request from "request-promise";
 <template>
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-              {{ card.name }}
+            <h1>Votre personnage pour ce tour</h1>
           </div>
 
           <div class="modal-body">
-              <p>
-                Prix : {{ card.price }}<br />
-                Type : {{ card.type.label }}<br />
-                Description : {{ getDescription }}
-              </p>
+            <img :src="require(`../../assets/images/cards/${character.image}`)" alt="">
+            <p>
+              Nom : {{ character.name }}<br />
+              Ordre du tour : {{ character.index }}<br />
+              Description : {{ character.description }}
+            </p>
           </div>
 
           <div class="modal-footer">
             <button @click="$emit('close')">
-              Annuler
+              Ok
             </button>
-            <button @click="$emit('buy')">
-                Acheter
-              </button>
           </div>
         </div>
       </div>
@@ -30,15 +29,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Model, Vue } from "vue-property-decorator";
+import { Component, Model, Prop, Vue } from "vue-property-decorator";
 
-@Component
-export default class PurchaseDialog extends Vue {
-  @Model() public card: any;
-
-  public get getDescription () {
-    return this.card.description ? this.card.description : "aucune";
-  }
+  @Component
+export default class CharacterDialog extends Vue {
+    @Model() public character: any;
 }
 </script>
 
@@ -61,7 +56,7 @@ export default class PurchaseDialog extends Vue {
   }
 
   .modal-container {
-    width: 300px;
+    width: 500px;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
@@ -78,6 +73,7 @@ export default class PurchaseDialog extends Vue {
 
   .modal-body {
     margin: 20px 0;
+    display: flex;
   }
 
   .modal-default-button {

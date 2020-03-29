@@ -3,7 +3,7 @@
     <div @click="playCard">
       <slot></slot>
     </div>
-    <purchase-dialog v-model="card" v-if="showDialog" @close="closeDialog" @buy="buyDistrict"></purchase-dialog>
+    <purchase-dialog v-model="card" v-if="showDialog" @close="closeDialog" @buy="buyDistrict" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import PurchaseDialog from "@/components/playground/card/PurchaseDialog.vue";
   components: { PurchaseDialog }
 })
 
-export default class Card extends Vue {
+export default class District extends Vue {
   @Model() public card : any;
 
   public showDialog: boolean = false;

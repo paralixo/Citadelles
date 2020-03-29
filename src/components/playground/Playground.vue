@@ -2,24 +2,24 @@
     <div>
       <div v-if="render" class="board">
         <h1>Cité</h1>
-        <Card class="card" v-model="boardData[index]" v-for="(card, index) of boardImage" :key="index" ><img :src="card" alt=""></Card>
+        <District class="card" v-model="boardData[index]" v-for="(card, index) of boardImage" :key="index" ><img :src="card" alt=""></District>
       </div>
       <div v-if="render" class="hand">
         <h1>Main</h1>
-        <Card @buy="buyDistrict" class="card" v-model="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></Card>
+        <District @buy="buyDistrict" class="card" v-model="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></District>
       </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Model, Vue, Watch } from "vue-property-decorator";
-import Card from "@/components/playground/card/Card.vue";
+import District from "@/components/playground/card/District.vue";
 import request from "request-promise";
 import { getOptions } from "@/views/services/request-options.service";
 import { IRequestOptions } from "../../../tests/unit/api/database/interfaces/RequestOptions.interface";
 
 @Component({
-  components: { Card }
+  components: { District }
 })
 export default class Playground extends Vue {
   @Model() currentPlayer!: any;
