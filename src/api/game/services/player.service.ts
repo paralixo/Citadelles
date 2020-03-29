@@ -63,46 +63,63 @@ export const isTargetable = async (targetedPlayer: IPlayerData): Promise<boolean
 export const getPointsFromDistricts = async (player: IPlayerData) => {
   let counter:number = 0;
   player.board.forEach(district => {
-    counter += district.price;
+    if (district.name === "Université" || district.name === "Dracoport") {
+      counter += district.price + 2;
+    } else {
+      counter += district.price;
+    }
   });
   return counter;
 };
 
 export const getPointsFromColorsDistricts = async (player: IPlayerData) => {
-  let counter:number = 0;
-
-  let trade : boolean = false;
-  let religion : boolean = false;
-  let military : boolean = false;
-  let noble : boolean = false;
-  let special : boolean = false;
+  let points:number = 0;
+  let isCourMiraclePresent : boolean = false;
+  let typeDistrict = {
+    trade: false,
+    religion: false,
+    military: false,
+    noble: false,
+    special: false
+  };
 
   player.board.forEach(district => {
     if (district.type) {
       switch (district.type.label) {
         case "Commerce et artisanat" :
-          trade = true;
+          typeDistrict.trade = true;
           break;
         case "Noblesse" :
-          noble = true;
+          typeDistrict.noble = true;
           break;
         case "Religion" :
-          religion = true;
+          typeDistrict.religion = true;
           break;
         case "Soldatesque" :
-          military = true;
+          typeDistrict.military = true;
           break;
         case "Prestige" :
-          special = true;
+          if (district.name === "Cour des miracles") {
+            isCourMiraclePresent = true;
+          } else {
+            typeDistrict.special = true;
+          }
           break;
-      }
-      if (trade && religion && military && noble && special) {
-        counter += 3;
       }
     }
   });
+  let counter : number = 0;
+  for (const type in typeDistrict) {
+    // @ts-ignore
+    if (typeDistrict[type] === true) {
+      counter++;
+    }
+  }
+  if (counter === 5 || (counter === 4 && isCourMiraclePresent)) {
+    points += 3;
+  }
 
-  return counter;
+  return points;
 };
 
 export const getPointsIfBoardSup8 = async (player: IPlayerData) => {

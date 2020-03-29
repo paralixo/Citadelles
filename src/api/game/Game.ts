@@ -33,7 +33,11 @@ import {
 } from "@/api/game/services/player.service";
 import { IDeckData } from "@/api/game/interfaces/models/DeckData.interface";
 import { IDistrictCardData } from "@/api/game/interfaces/models/cards/DistrictCardData.interface";
-import { getDistrictById } from "@/api/game/services/district.service";
+import {
+  checkIfLibrary,
+  checkIfObeservatory,
+  getDistrictById
+} from "@/api/game/services/district.service";
 import { ICharacterCardData } from "@/api/game/interfaces/models/cards/CharacterCardData.interface";
 import {
   condottieriDestroyDistrict,
@@ -107,7 +111,6 @@ application.get("/player/:name/character/:position", async (request: any, respon
 application.get("/player/:name/choice/:choice", async (request: any, response: any) => {
   const playerName: string = request.params.name;
   const choice: number = parseInt(request.params.choice);
-
   const player: IPlayerData = await getPlayerOnName(playerName);
 
   switch (choice) {
@@ -115,20 +118,30 @@ application.get("/player/:name/choice/:choice", async (request: any, response: a
       await updateFieldOfPlayer(playerName, "money", player.money + 3);
       break;
     case PICK_CARDS:
-      const drawnCardsId: string[] = await draw(2);
-      await updateFieldOfPlayer(playerName, "temporary_hand", drawnCardsId);
+      let cardsToDraw : number = 2;
+      const isObservatory : any = await checkIfObeservatory(player);
+      const isLibrary : any = await checkIfLibrary(player);
+      if (isObservatory) {
+        cardsToDraw = 3;
+      }
+      const drawnCardsId: string[] = await draw(cardsToDraw);
+      if (isLibrary) {
+        for (const cardId of drawnCardsId) {
+          player.hand.push(cardId);
+        }
+        await updateFieldOfPlayer(playerName, "hand", player.hand);
+      } else {
+        await updateFieldOfPlayer(playerName, "temporary_hand", drawnCardsId);
+      }
       break;
   }
-
   response.send({ success: true });
 });
 
 application.get("/player/:name/discard/:choice", async (request: any, response: any) => {
   const playerName: string = request.params.name;
   const choice: number = parseInt(request.params.choice);
-
   const player: IPlayerData = await getPlayerOnName(playerName);
-
   player.hand.push(player.temporary_hand[choice]);
   await updateFieldsOfPlayer(playerName, [
     { field: "temporary_hand", value: [] },
@@ -345,6 +358,41 @@ application.get("/player/:name/computer/buyDistrict", async (request:any, respon
   const success : IResponseData = await buyDistrictOrNot(player);
 
   response.send(success);
+});
+
+application.get("/player/:name/laboratory/:choice", async (request:any, response:any) => {
+  const playerName: string = request.params.name;
+  const player: IPlayerData = await getPlayerOnName(playerName);
+  const choice: number = parseInt(request.params.choice);
+  player.hand.splice(choice, 1);
+  for (const district of player.board) {
+    if (district.name === "Laboratoire") {
+      await updateFieldsOfPlayer(playerName, [
+        { field: "money", value: player.money += 1 },
+        { field: "hand", value: player.hand }
+      ]);
+    }
+  }
+  response.send({
+    success: true
+  });
+});
+
+application.get("/player/:name/manufacture", async (request:any, response:any) => {
+  const playerName: string = request.params.name;
+  const player: IPlayerData = await getPlayerOnName(playerName);
+  for (const district of player.board) {
+    if (district.name === "Manufacture") {
+      await draw(3);
+      await updateFieldsOfPlayer(playerName, [
+        { field: "money", value: player.money -= 3 },
+        { field: "hand", value: player.hand }
+      ]);
+    }
+  }
+  response.send({
+    success: true
+  });
 });
 
 application.listen(GAME_API_PORT, () => {

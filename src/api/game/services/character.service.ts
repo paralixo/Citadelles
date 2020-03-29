@@ -21,6 +21,7 @@ import { InvalidNumberOfCardsError } from "@/api/game/constants/errors/invalid-n
 import { ICardData } from "@/api/game/interfaces/models/cards/CardData.interface";
 import { IDistrictCardData } from "@/api/game/interfaces/models/cards/DistrictCardData.interface";
 import { NotEnoughtMoneyError } from "@/api/game/constants/errors/not-enougth-money.error";
+import { CannotBeDestroyed } from "@/api/game/constants/errors/cannot-be-destroyed";
 
 export const getCharacterById = async (id: string): Promise<ICharacterCardData> => {
   const condition: { _id: string | null } = { _id: id === undefined ? null : id };
@@ -31,6 +32,12 @@ export const getCharacterById = async (id: string): Promise<ICharacterCardData> 
 
 export const startTurnEffects = async (character: ICharacterCardData, request: any, player: IPlayerData) => {
   const playerName: string = player.name;
+  let isMagicSchool : boolean = false;
+  for (const card of player.board) {
+    if (card.name === "Ecole de magie") {
+      isMagicSchool = true;
+    }
+  }
   switch (character.name) {
     case ASSASSIN:
       let targetedCharacter: string = request.body.target;
@@ -55,18 +62,18 @@ export const startTurnEffects = async (character: ICharacterCardData, request: a
     case KING:
       // TODO: recoit la carte 'couronne'
       const areNobleDistricts: boolean[] = player.board.map(district => {
-        return district.type.label === "Noblesse";
+        return district.type.label === "Noblesse" || isMagicSchool;
       });
       const numberOfNobleDistricts: number = areNobleDistricts.filter(Boolean).length;
       await updateFieldOfPlayer(playerName, "money", player.money + numberOfNobleDistricts);
       break;
     case BISHOP:
-      const areReligiousDistricts: boolean[] = player.board.map(district => district.type.label === "Religion");
+      const areReligiousDistricts: boolean[] = player.board.map(district => district.type.label === "Religion" || isMagicSchool);
       const numberOfReligiousDistricts: number = areReligiousDistricts.filter(Boolean).length;
       await updateFieldOfPlayer(playerName, "money", player.money + numberOfReligiousDistricts);
       break;
     case TRADER:
-      const areCommercialDistricts: boolean[] = player.board.map(district => district.type.label === "Commerce et artisanat");
+      const areCommercialDistricts: boolean[] = player.board.map(district => district.type.label === "Commerce et artisanat" || isMagicSchool);
       const numberOfCommercialDistricts: number = areCommercialDistricts.filter(Boolean).length;
       await updateFieldOfPlayer(playerName, "money", ++player.money + numberOfCommercialDistricts);
       break;
@@ -78,7 +85,7 @@ export const startTurnEffects = async (character: ICharacterCardData, request: a
       updateFieldOfPlayer(playerName, "hand", player.hand);
       break;
     case CONDOTTIERI:
-      const areMilitaryDistricts: boolean[] = player.board.map(district => district.type.label === "Soldatesque");
+      const areMilitaryDistricts: boolean[] = player.board.map(district => district.type.label === "Soldatesque" || isMagicSchool);
       const numberOfMilitaryDistricts: number = areMilitaryDistricts.filter(Boolean).length;
       await updateFieldOfPlayer(playerName, "money", player.money + numberOfMilitaryDistricts);
       break;
@@ -145,7 +152,9 @@ export const condottieriDestroyDistrict = async (player: IPlayerData, targetedPl
   if (destroyedDistrict.price > player.money) {
     return NotEnoughtMoneyError;
   }
-
+  if (destroyedDistrict.name === "Donjon") {
+    return CannotBeDestroyed;
+  }
   await updateFieldOfPlayer(targetedPlayer.name, "board", targetedPlayer.board);
   await updateFieldOfPlayer(player.name, "targetedBy", CONDOTTIERI);
   await updateFieldOfPlayer(player.name, "money", player.money - destroyedDistrict.price);
