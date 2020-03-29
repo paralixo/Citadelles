@@ -1,9 +1,11 @@
 <template>
     <div>
       <div class="board">
+        <h1>Cité</h1>
         <Card class="card" :card="districtZoneData[index]" v-for="(card, index) of districtZoneImage" :key="index" ><img :src="card" alt=""></Card>
       </div>
       <div class="hand">
+        <h1>Main</h1>
         <Card class="card" :card="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></Card>
       </div>
     </div>
@@ -52,18 +54,25 @@ export default class Playground extends Vue {
 <style lang="css" scoped>
 .hand{
   position: absolute;
+  width: 100%;
   bottom: 155px;
-  left:30%;
+  left:0%;
 }
 
 .board {
   position: absolute;
-  bottom: calc(155px + 180px);
-  left:30%;
+  width: 100%;
+  bottom: calc(155px + 180px + 60px);
+  left:0%;
 }
 
 .card{
   display: inline-block;
   margin-right: 10px
+}
+
+h1 {
+  font-size: 22px;
+  width: 100%;
 }
 </style>
