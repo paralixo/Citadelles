@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import District from "@/components/playground/card/District.vue";
 import Playground from "@/components/playground/Playground.vue";
 import MenuButton from "@/components/gui/MenuButton.vue";
 import { getOptions } from "@/views/services/request-options.service";
@@ -35,6 +34,7 @@ export default class Board extends Vue {
 
   public characterIsSelected () {
     this.renderCharacterDialog = false;
+    this.continueCharacterRoundTable();
     this.refresh();
   }
 
@@ -52,6 +52,7 @@ export default class Board extends Vue {
     await this.fetchPlayers();
     this.switchPlayground(this.players[0].name);
     this.fetchCharacterDeck();
+    await this.startCharacterRoundTable();
   }
 
   public async fetchCharacterDeck () {
@@ -68,6 +69,32 @@ export default class Board extends Vue {
       characters.push(response.data[0]);
     }
     return characters;
+  }
+
+  public unpassedRoundPlayers: any[] = [];
+  public async startCharacterRoundTable () {
+    this.unpassedRoundPlayers = this.players;
+    // TODO: first to choose has the crow
+    for (const player of this.players) {
+      this.unpassedRoundPlayers.shift();
+      if (player.isHuman) {
+        return;
+      } else {
+        await this.computerChooseCharacter(player);
+      }
+    }
+  }
+
+  public async continueCharacterRoundTable () {
+    for (const player of this.unpassedRoundPlayers) {
+      await this.computerChooseCharacter(player);
+    }
+    this.refresh();
+  }
+
+  public async computerChooseCharacter (player: any) {
+    const options: IRequestOptions = getOptions(`/player/${player.name}/character/0`, {});
+    let response: any = await request.get(options);
   }
 }
 </script>
