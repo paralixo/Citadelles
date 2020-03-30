@@ -90,6 +90,9 @@ const requestDiscard = async (choice:number, playerName:string) => {
 };
 
 export const minimumPriceDistrictInHand = (player:IPlayerData) : number => {
+  if (player.hand.length === 0) {
+    return 999;
+  }
   let priceDistrict : number[] = [];
   for (const card of player.hand) {
     priceDistrict.push(card.price);
