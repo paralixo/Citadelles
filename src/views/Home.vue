@@ -2,8 +2,8 @@
   <div id="menu">
     <img id="logo" src="~@/assets/images/citadelles.png" alt="electron-vue" />
     <MenuButton href="#/gameConfiguration">Un joueur</MenuButton>
-    <MenuButton href="#/multiplayerConfiguration">Multijoueur</MenuButton>
-    <MenuButton href="#/options">Options</MenuButton>
+    <MenuButton class="disabled" href="#/multiplayerConfiguration">Multijoueur</MenuButton>
+    <MenuButton class="disabled" href="#/options">Options</MenuButton>
     <MenuButton href="#/credits">Crédits</MenuButton>
     <MenuButton href="#/quit">Quitter</MenuButton>
   </div>

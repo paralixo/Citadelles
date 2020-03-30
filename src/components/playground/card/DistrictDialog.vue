@@ -20,7 +20,7 @@
               Annuler
             </button>
             <button @click="$emit('action')">
-                {{ actionName }}
+                {{ actionName ? actionName : "Quitter" }}
               </button>
           </div>
         </div>
