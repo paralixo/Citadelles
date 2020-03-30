@@ -1,38 +1,53 @@
 # Citadelles
-Le projet "Citadelles" consiste à une version numérique du jeu de carte original éponyme "Citadelles".
+Il s'agit d'un jeu sur navigateur repris du jeu de société du même nom "Citadelle".
 
 ## Motivation
-Ce jeu est notre projet de fin de bachelor 3. C'est un jeu de cartes qui demande de la réflexion mais qui reste amusant et sans prise de tête entre amis. Il convient parfaitement aux petits comme aux grands. Il est aussi possible de faire des parties qui sont rapides , pratique quand on n'a pas beaucoup de temps.
+Ce jeu est notre projet de bachelor 3. C'est un jeu de cartes qui demande de la réflexion mais qui reste amusant et sans prise de tête entre amis. Il convient parfaitement aux petits comme aux grands. Il est aussi possible de faire des parties qui sont rapide , pratique quand on a pas beaucoup de temps.
 
-## Technologies utilisées
-- Vue
+## Statut du projet
+Ca peut être assez interessant : voir sonarqube, travis, appveyor
+
+## Style du code
+Utilisation d'ESLint avec standardJS + linting de typescript
+```
+yarn lint
+```
+
+## Screenshots
+A terme
+
+## Technologies utilisées (en vrac et non exhaustif)
+- Vue CLI
 - Electron
 - Jest
 - TypeScript
-- NodeJs
+- VueJS
 - MongoDB
+- ORM Mongoose
 
 ## Installation
-Prérequis :
-- npm 6.13.4 ou yarn 1.21.1
-- nodejs 12.14.1 
-
 ```
-git clone <https://github.com/paralixo/Citadelles.git> 
+git clone <http/ssh>
 cd citadelles
 yarn install / npm install
-yarn electron:serve / npm run electron:serve
+yarn electron:serve / npm electron:serve
 ```
 
-Pour lancer le projet il n'est pas obligatoire de l'installer l'environnement de développement (voir executable du projet)
+## Deploiement
+``` 
+yarn electron:build
+```
+Puis envoyer l'installeur `./dist_electron/citadelles.exe`
+
+## Tests
+Après avoir lancé l'application (pour que les apis tournent)
+```
+yarn test:unit
+```
 
 ## Le jeu
 Voici les règles officielles du jeu : http://jeuxstrategie.free.fr/Citadelles_complet.php
 
-## Déroulement type d'un tour de jeu
-Le joueur selectionne un personnage aleatoire. Il choisit ensuite entre piocher deux cartes et en défausser une ou gagner trois pièces d'or. Après cela il peut choisir d'acheter un quartier de sa main contre les pièces d'or spécifiées sur le dit quartier. Au bout de huit quartiers posés sur le terrain d'un joueur le tour continue puis la partie se termine à la fin de ce tour de table. On compte alors les points. Le joueur ayant le plus de point remporte la partie.
-
-## Présentation du jeu
 Dans Citadelles, le but est de bâtir une cité prestigieuse avant que vos adversaires ne parviennent à construire la leur. Pour développer votre ville et de nouveaux quartiers, il vous faudra bien sûr de l’or, mais aussi le soutien des notables locaux, roi, échevin, cardinal, patricien ou archiviste, et parfois aussi de la lie de la cité, voleur, espion, assassin ou sorcière.
 
 Citadelles est un jeu de bluff, d’intrigues et de stratégie. Les joueurs amassent de l’or qu’ils dépensent ensuite pour bâtir les quartiers qui composent leur cité médiévale. À la fin de la partie, le joueur qui a constitué la plus belle, la plus grande, la plus prestigieuse cité est vainqueur.
@@ -50,12 +65,7 @@ Pourrez-vous deviner quels sont les personnages choisis par les autres joueurs ?
 Rebondissements, coups tordus et ruses sont les points forts de Citadelles. Les règles sont simples et accessibles et on se plonge volontiers dans l'ambiance médiévale.
 
 ## Routes
-### API Database "localhost:3000" : 
-Chaque model possède 4 verbes http : 
-- get
-- post
-- delete
-- patch
+#API Database "localhost:3000" : 
 
 ```/character``` : Permet d'obtenir la liste des personnages.
 
@@ -67,7 +77,7 @@ Chaque model possède 4 verbes http :
 
 ```/type``` : Permet d'avoir la liste des differents types de quartier.
 
-### API Du jeu "localhost:3001" :
+#API Du jeu "localhost:3001" :
 
 ```/initialize ``` : Permet d'initialiser la partie.
 
@@ -75,7 +85,7 @@ Chaque model possède 4 verbes http :
 
 ```/player/:name/character/:position``` : Assigne une carte de personnage dans le deck de personnages à un joueur.
 
-```/player/:name/choice/:choice```: Permet de choisir entre : prendre de l'argent (3 pièces d'or) ou de piocher deux cartes et les      mettre dans la main 'temporaire' du joueur au debut de son tour de jeu.
+```/player/:name/choice/:choice```: Permet de choisir entre : prendre de l'argent (3 pièces d'or) ou de piocher deux cartes et les mettre dans la main 'temporaire' du joueur au debut de son tour de jeu.
 
 ```/player/:name/discard/:choice```: Permet de choisir une carte à ajouter de la main temporaire à la main 'définitive' du joueur.
 
@@ -99,45 +109,16 @@ Chaque model possède 4 verbes http :
 
 ```/player/:name/manufacture``` : Active le pouvoir de la manufacture si elle est posé sur le terrain du joueur.
 
-## IHM
-### Menu principal
-![MainMenu](./public/ImagesREADME/MainMenu.png)
-
-### Création de la partie
-![MainMenu](./public/ImagesREADME/StartGame.png)
-
-### Choix Aléatoire du personnage
-![MainMenu](./public/ImagesREADME/ChoixPersonnage.png)
-
-### Affichage du personnage choisi
-![MainMenu](./public/ImagesREADME/PersoChoisi.png)
-
-### Action de début de tour
-![MainMenu](./public/ImagesREADME/ActionBeginning.png)
-
-### Ciblage du voleur ou de l'assassin
-![MainMenu](./public/ImagesREADME/Ciblage.png)
-
-### Achat d'un quartier
-![MainMenu](./public/ImagesREADME/AchatQuartier.png)
-
-### Plateau de jeu
-![MainMenu](./public/ImagesREADME/Plateau.png)
-
-## Management du projet
-- Dans un premier temps nous nous sommes concerté afin de mettre le projet au clair. (Choix technologiques, outils).
-
-- Nous avons ensuite fait des usersStorys que nous avons retranscrit au propre sur notre GitLab. *Note: Gitlab nous ayant laché pendant le projet nous avons migré sur GitHub et avons perdu les users story*
-
-- Nous avons mis en place un Github avec un bot Discord et des règles afin de pouvoir valider mutuellement nos travaux.
-
-- Pour la répartition des taches nous faisions dans l'ordre de ce qu'on avit décidé au début. Le but etant de travailler chacun sur une fonctionnalitée différente a chaque fois.
 
 ## Contribution
 Developpeurs : Clément MEHAYE et Florian LAFUENTE
 
-Citadelles est un jeu édité par : Edge Entertainment-Ubik
+sources, repos, inspirations, blogs, personnes qui ont participé
+directement ou indirectement au projet
 
 ## Contacts
 Clément MEHAYE : clement.mehaye@ynov.com
 Florian LAFUENTE : florian.lafuente@ynov.com
+
+## License 
+jsp
