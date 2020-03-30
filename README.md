@@ -68,22 +68,21 @@ Rebondissements, coups tordus et ruses sont les points forts de Citadelles. Les 
 
 ## Routes
 ### API de la base de données :
-"localhost:3000" 
-Chaque model possède 4 verbes http : 
-- get
-- post
-- delete
-- patch
+Sur le port 3000 (en local).
 
-```/character``` : Permet d'obtenir la liste des personnages.
+On possède 4 routes pour chaque modele de la base :
+- GET ```localhost:3000/:model``` : Récupérer les données du modèle
+- POST ```localhost:3000/:model``` : Insérer une nouvelle donnée dans le modèle
+- DELETE ```localhost:3000/:model``` : Supprimer une donnée du modèle
+- PATCH ```localhost:3000/:model``` : Mettre à jour une ou plusieurs données du modèle
 
-```/deck``` : Permet d'avoir la liste des cartes des deck sous forme d'id.
-
-```/district``` : Permet d'avoir la liste des cartes de quartier.
-
-```/player``` : Permet d'avoir la liste des players ainsi que de leurs informations.
-
-```/type``` : Permet d'avoir la liste des differents types de quartier.
+Note: On peut passer des parametres dans le body de chaque requête (de la même façon qu'avec une base mongo).
+Les modèles disponibles sont : 
+- 'character'
+- 'deck'
+- 'district'
+- 'player'
+- 'type'
 
 ### API Du jeu "localhost:3001" :
 
