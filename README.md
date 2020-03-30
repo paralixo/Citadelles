@@ -101,35 +101,43 @@ Chaque model possède 4 verbes http :
 
 ## IHM
 ### Menu principal
-![MainMenu](./public/ImagesREADME/MainMenu.png)
+Permet de lancer une partie pour le moment en solitaire.
+![MainMenu](./src/assets/images/ImagesREADME/mainMenu.png)
 
 ### Création de la partie
-![MainMenu](./public/ImagesREADME/StartGame.png)
+Permet d'ajouter des joueurs (IA) à la partie.
+![MainMenu](./src/assets/images/ImagesREADME/playMenu.png)
 
 ### Choix Aléatoire du personnage
-![MainMenu](./public/ImagesREADME/ChoixPersonnage.png)
+Choix du personnage au debut d'un tour de de table.
+![MainMenu](./src/assets/images/ImagesREADME/aleatoireCharac.png)
 
 ### Affichage du personnage choisi
-![MainMenu](./public/ImagesREADME/PersoChoisi.png)
+Affiche une fenêtre de dialogue avec les informations du personnage.
+![MainMenu](./src/assets/images/ImagesREADME/charac.png)
 
 ### Action de début de tour
-![MainMenu](./public/ImagesREADME/ActionBeginning.png)
+Permet de choisir une action au debut du tour de jeu.
+![MainMenu](./src/assets/images/ImagesREADME/begChoice.png)
 
 ### Ciblage du voleur ou de l'assassin
-![MainMenu](./public/ImagesREADME/Ciblage.png)
+Choix de la cible du voleur ou de l'assasin.
+![MainMenu](./src/assets/images/ImagesREADME/target.png)
 
 ### Achat d'un quartier
-![MainMenu](./public/ImagesREADME/AchatQuartier.png)
+Fenetre de dialogue pour acheter un quartier. Permet de voir les informations relatives au quartier séléctionné.
+![MainMenu](./src/assets/images/ImagesREADME/buy.png)
 
 ### Plateau de jeu
-![MainMenu](./public/ImagesREADME/Plateau.png)
+Une image global du plateau avec la main du joueur, sa cité,  et les informations sur les autres joueurs.
+![MainMenu](./src/assets/images/ImagesREADME/board.png)
 
 ## Management du projet
 - Dans un premier temps nous nous sommes concerté afin de mettre le projet au clair. (Choix technologiques, outils).
 
 - Nous avons ensuite fait des usersStorys que nous avons retranscrit au propre sur notre GitLab. *Note: Gitlab nous ayant laché pendant le projet nous avons migré sur GitHub et avons perdu les users story*
 
-- Nous avons mis en place un Github avec un bot Discord et des règles afin de pouvoir valider mutuellement nos travaux.
+- Nous avons mis en place un Github avec un bot Discord et des règles afin de pouvoir valider mutuellement nos travaux. Mise en place des GitHooks pour les tests unitaires et ESLINT
 
 - Pour la répartition des taches nous faisions dans l'ordre de ce qu'on avit décidé au début. Le but etant de travailler chacun sur une fonctionnalitée différente a chaque fois.
 
