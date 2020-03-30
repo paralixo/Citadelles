@@ -5,7 +5,7 @@
       <div class="status-panel">
         <div>
           <h2>Personnage</h2>
-          <p>{{status.character}}</p>
+          <p>{{character}}</p>
         </div>
         <div>
           <h2>Cartes en main</h2>
@@ -71,6 +71,7 @@ import { MILITARY, NOBLE, PRESTIGIOUS, RELIGIOUS, TRADE } from "@/api/database/c
 @Component
 export default class Status extends Vue {
   @Prop() status!: IStatus;
+  @Prop() showCharacterName!: any;
   public districtsPerType: any = this.numberOfDistrictsPerType();
 
   @Watch("status")
@@ -118,6 +119,10 @@ export default class Status extends Vue {
 
   created () {
     this.districtsPerType = this.numberOfDistrictsPerType();
+  }
+
+  public get character () {
+    return this.showCharacterName ? this.status.character : "???";
   }
 }
 </script>

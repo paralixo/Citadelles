@@ -6,7 +6,7 @@
       </div>
       <div v-if="render" class="hand">
         <h1>Main</h1>
-        <District action-name="Acheter" @buy="buyDistrict" class="card" v-model="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="card" alt=""></District>
+        <District action-name="Acheter" @buy="buyDistrict" class="card" v-model="handData[index]" v-for="(card, index) of handImages" :key="index"><img :src="showImage(card)" alt=""></District>
       </div>
     </div>
 </template>
@@ -70,6 +70,13 @@ export default class Playground extends Vue {
 
   public getImage (imageName: string) {
     return require("../../assets/images/cards/" + imageName);
+  }
+
+  public showImage (card: any) {
+    if (this.currentPlayer.isHuman) {
+      return card;
+    }
+    return require("../../assets/images/dos_cartes.jpg");
   }
 }
 </script>
