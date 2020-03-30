@@ -5,7 +5,7 @@
       Joueur {{ index + 1 }}:
       <input v-model="player.name" :placeholder="'Nom du joueur ' + (index + 1) "/>
       Humain : <input type="checkbox" v-model="player.isHuman" disabled>
-      <button v-if="index !== 0" @click="removePlayer(index)">Supprimer</button>
+      <button style="position: absolute" v-if="index >= 3" @click="removePlayer(index)">Supprimer</button>
     </div>
     <MenuButton @click="initialize">Jouer</MenuButton>
     <MenuButton href="#/">Retour</MenuButton>
@@ -72,6 +72,8 @@ export default class GameConfiguration extends Vue {
 
   async created () {
     this.newPlayer(true);
+    this.newPlayer();
+    this.newPlayer();
   }
 }
 </script>

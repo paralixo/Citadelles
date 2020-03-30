@@ -1,6 +1,6 @@
 <template>
   <div>
-    <StatusManager v-model="players" @show-playground="switchPlayground"/>
+    <StatusManager v-model="players" @show-playground="switchPlayground" :showCharacterName="playersCharacters"/>
     <MenuButton href="#/gameConfiguration">Quitter</MenuButton>
     <MenuButton @click="endTurn">Tour suivant</MenuButton>
     <Playground v-model="currentPlayer" @buy="refresh"/>
@@ -37,7 +37,7 @@ import {
   computerChooseCharacter,
   computerPlayTurn,
   didSomeoneFinished,
-  fetchCharacterName, getScores
+  fetchCharacterName, getIndex, getScores
 } from "@/views/services/board.service";
 import ScoreDialog from "@/components/gui/ScoreDialog.vue";
 
@@ -46,6 +46,7 @@ import ScoreDialog from "@/components/gui/ScoreDialog.vue";
 })
 export default class Board extends Vue {
   public players: any[] = [];
+  public playersCharacters: any[] = [];
   public currentPlayer: any = {};
   public characterDeck: any[] = [];
   public renderCharacterDialog: boolean = false;
@@ -120,11 +121,16 @@ export default class Board extends Vue {
   }
 
   public async startGameRoundTable () {
+    this.playersCharacters = [];
     let orderedPlayers: any[] = JSON.parse(JSON.stringify(this.players));
     orderedPlayers.sort((a, b) => (a.character_id.index > b.character_id.index) ? 1 : -1);
     this.unpassedRoundPlayers = JSON.parse(JSON.stringify(orderedPlayers));
+
     for (const player of orderedPlayers) {
+      const indexPlayer = getIndex(player, this.players);
+      this.playersCharacters[indexPlayer] = true;
       this.unpassedRoundPlayers.shift();
+
       if (player.isHuman) {
         if (player.character_id.name === THIEF || player.character_id.name === ASSASSIN) {
           this.renderTargetDialog = true;
@@ -132,10 +138,12 @@ export default class Board extends Vue {
           await this.startTurn(player);
           this.renderStartTurnDialog = true;
         }
+
         await this.refresh();
         return;
       } else {
         const response: any = await this.startTurn(player);
+
         if (response.success) {
           await computerPlayTurn(player);
           await this.refresh();
@@ -145,8 +153,10 @@ export default class Board extends Vue {
   }
 
   public async continueGameRoundTable () {
+    this.showAllPlayersCharacters();
     for (const player of this.unpassedRoundPlayers) {
       const response: any = await this.startTurn(player);
+      this.refresh();
       if (response.success) {
         await computerPlayTurn(player);
       }
@@ -164,6 +174,12 @@ export default class Board extends Vue {
       await this.refresh();
       this.scores = await getScores(this.players);
       this.renderScoreDialog = true;
+    }
+  }
+
+  public showAllPlayersCharacters () {
+    for (const index in this.players) {
+      this.playersCharacters[index] = true;
     }
   }
 

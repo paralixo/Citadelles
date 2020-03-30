@@ -49,3 +49,15 @@ export async function getScores (players: any[]): Promise<any[]> {
   // @ts-ignore
   return scores.sort((scoreA, scoreB) => scoreA.points > scoreB.points);
 }
+
+export function getIndex (playerSearched: any, players: any[]): number {
+  for (const index in players) {
+    const player = players[index];
+    if (player._id === playerSearched._id) {
+      // @ts-ignore
+      return index;
+    }
+  }
+
+  return 0;
+}

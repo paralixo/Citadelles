@@ -5,12 +5,13 @@
       :id="`status${index}`"
       v-for="(player, index) in players"
       :key="index"
-      :status="getStatusOfPlayer(player)"/>
+      :status="getStatusOfPlayer(player)"
+      :showCharacterName="showCharacterName[index]"/>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Model, Vue } from "vue-property-decorator";
+import { Component, Model, Prop, Vue } from "vue-property-decorator";
 import Status from "@/components/status/Status.vue";
 import { IStatus } from "@/components/status/status.interface";
 
@@ -18,10 +19,11 @@ import { IStatus } from "@/components/status/status.interface";
   components: { Status }
 })
 export default class StatusManager extends Vue {
-  @Model() players!: any;
+  @Model() public players!: any;
+  @Prop() public showCharacterName!: any[]
 
   public getStatusOfPlayer (player: any): IStatus {
-    const characterName: string = player.character_id === null ? "???" : player.character_id.name;
+    const characterName: string = player.character_id === null ? "Aucun" : player.character_id.name;
     return {
       name: player.name,
       money: player.money,
