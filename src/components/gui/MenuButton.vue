@@ -12,6 +12,11 @@ export default class MenuButton extends Vue {
 </script>
 
 <style scoped>
+  a.disabled {
+    pointer-events: none;
+    background-color: rgba(236, 240, 241, 0.5);
+  }
+
   a {
     width: 220px;
     margin: 0 auto 20px;
@@ -19,7 +24,7 @@ export default class MenuButton extends Vue {
     display: block;
     box-sizing: border-box;
     border-radius: 5px;
-    background-color: rgba(236, 240, 241, 0.5);
+    background-color: #EBEBE4;
     color: #757e80;
     cursor: pointer;
     text-align: center;
