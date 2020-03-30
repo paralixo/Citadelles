@@ -1,7 +1,10 @@
 <template>
-  <div>
-    Developpeurs:
-    Clément MEHAYE & Florian LAFUENTE
+  <div class="credits">
+    <p>
+      Clément MEHAYE<br />
+      &<br />
+      Florian LAFUENTE
+    </p>
     <MenuButton href="#/">Retour au menu</MenuButton>
   </div>
 </template>
@@ -17,5 +20,8 @@ export default class Credits extends Vue {
 </script>
 
 <style scoped>
-
+.credits {
+  position: relative;
+  top: 300px;
+}
 </style>
