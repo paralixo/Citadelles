@@ -5,7 +5,7 @@
     <MenuButton class="disabled" href="#/multiplayerConfiguration">Multijoueur</MenuButton>
     <MenuButton class="disabled" href="#/options">Options</MenuButton>
     <MenuButton href="#/credits">Crédits</MenuButton>
-    <MenuButton href="#/quit">Quitter</MenuButton>
+    <MenuButton @click="closeApp">Quitter</MenuButton>
   </div>
 </template>
 
@@ -17,6 +17,10 @@ import MenuButton from "@/components/gui/MenuButton.vue";
   components: { MenuButton }
 })
 export default class Home extends Vue {
+  public window = require("electron").remote.getCurrentWindow();
+  public closeApp () {
+    this.window.close();
+  }
 }
 </script>
 
