@@ -211,7 +211,6 @@ export default class Board extends Vue {
 
 <style lang="css">
 body {
-  background-color: grey !important;
-  background-image: none ;
+  background-image: url('../assets/images/background.jpg') ;
 }
 </style>

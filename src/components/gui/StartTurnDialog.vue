@@ -14,7 +14,7 @@
                 <MenuButton @click="getMoney">S'enrichir</MenuButton>
               </div>
               <div v-if="showSecondChoice">
-                <District @discard="discardCard" action-name="Garder" class="card" v-model="temporaryHandData[index]" v-for="(card, index) of temporaryHandImages" :key="index" ><img :src="card" alt=""></District>
+                <District :possibility-to-show-popup="true" @discard="discardCard" action-name="Garder" class="card" v-model="temporaryHandData[index]" v-for="(card, index) of temporaryHandImages" :key="index" ><img :src="card" alt=""></District>
               </div>
             </div>
           </div>
@@ -52,15 +52,19 @@ export default class StartTurnDialog extends Vue {
       const options: IRequestOptions = getOptions(`/player/${this.player.name}/choice/1`, {});
       await request.get(options);
       this.$emit("draw");
-      setTimeout(() => { this.getTemporaryHand(); }, 100);
-      this.showSecondChoice = true;
+      setTimeout(() => {
+        this.getTemporaryHand();
+        this.showSecondChoice = this.temporaryHandData.length !== 0;
+        if (!this.showSecondChoice) {
+          this.closeDialog();
+        }
+      }, 100);
+
       this.showFirstChoice = false;
     }
 
     public async discardCard (card: any) {
-      console.log(card);
       const cardIndex: number = this.temporaryHandData.findIndex((temporaryCard) => temporaryCard === card);
-      console.log(cardIndex);
       const options: IRequestOptions = getOptions(`/player/${this.player.name}/discard/${cardIndex}`, {});
       await request.get(options);
       this.closeDialog();
@@ -110,6 +114,8 @@ export default class StartTurnDialog extends Vue {
   .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
+    position: relative;
+    bottom: 12%;
   }
 
   .modal-container {
