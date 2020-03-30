@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="config">
     <MenuButton @click="newPlayer">Ajouter un joueur</MenuButton>
     <div v-for="(player, index) in players" :key="index">
       Joueur {{ index + 1 }}:
@@ -81,5 +81,10 @@ export default class GameConfiguration extends Vue {
 <style scoped>
 .name-input {
   display: block;
+}
+
+.config {
+  position: relative;
+  top: 250px;
 }
 </style>
