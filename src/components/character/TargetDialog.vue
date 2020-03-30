@@ -8,7 +8,7 @@
           </div>
 
           <div class="modal-body">
-            <template v-for="(character, key) of characters" >
+            <template v-for="(character, key) of availableTargets" >
                 <img @click="selectCharacter(character.name)" :key="key" :src="require(`../../assets/images/cards/${character.image}`)" alt="">
             </template>
           </div>
@@ -23,10 +23,37 @@ import { Component, Model, Prop, Vue } from "vue-property-decorator";
 import { IRequestOptions } from "../../../tests/unit/api/database/interfaces/RequestOptions.interface";
 import { getOptions } from "@/views/services/request-options.service";
 import request from "request-promise";
+import { ASSASSIN, THIEF } from "@/api/game/constants/character.constant";
 
 @Component
 export default class TargetDialog extends Vue {
+  @Model() public players: any;
   public characters: any[] = [];
+
+  public get availableTargets () {
+    let availableTargets: any[] = this.characters;
+
+    const alreadyTargetedPlayer: any[] = this.players.find(this.targetedPlayers);
+    let charactersUntargetables: string[] = [];
+    if (alreadyTargetedPlayer) {
+      // @ts-ignore
+      charactersUntargetables.push(alreadyTargetedPlayer.character_id.name);
+    }
+    if (this.players[0].character_id.name === THIEF) {
+      charactersUntargetables.push(THIEF);
+    }
+    charactersUntargetables.push(ASSASSIN);
+
+    return this.available(availableTargets, charactersUntargetables);
+  }
+
+  public targetedPlayers (player: any) {
+    return player.targetedBy !== "";
+  }
+
+  public available (availableTargets: any[], charactersUntargetables: string[]): any[] {
+    return availableTargets.filter(character => !charactersUntargetables.includes(character.name));
+  }
 
   public async allCharacters () {
     const options: IRequestOptions = getOptions("/Character", {}, true);
@@ -80,7 +107,6 @@ export default class TargetDialog extends Vue {
 
   .modal-body {
     margin: 20px 0;
-    display: flex;
   }
 
   .modal-default-button {
