@@ -6,7 +6,7 @@
     <Playground v-model="currentPlayer" @buy="refresh"/>
     <CharacterPickerDialog v-if="renderCharacterDialog" v-model="characterDeck" :current-player-name="players[0].name" @select="characterIsSelected"/>
     <StartTurnDialog v-if="renderStartTurnDialog" v-model="players[0]" @draw="refresh" @choice-over="startChoiceIsOver"/>
-    <TargetDialog ref="target" v-if="renderTargetDialog" @select="selectATarget"/>
+    <TargetDialog ref="target" v-if="renderTargetDialog" @select="selectATarget" v-model="players"/>
     <ScoreDialog v-if="renderScoreDialog" v-model="scores"/>
   </div>
 </template>
