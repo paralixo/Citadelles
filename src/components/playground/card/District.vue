@@ -18,6 +18,7 @@ import DistrictDialog from "@/components/playground/card/DistrictDialog.vue";
 export default class District extends Vue {
   @Model() public card : any;
   @Prop() actionName!: string;
+  @Prop() possibilityToShowPopup!: boolean;
 
   public showDialog: boolean = false;
   public closeDialog () {
@@ -45,7 +46,9 @@ export default class District extends Vue {
   }
 
   public playCard () {
-    this.showDialog = true;
+    if (this.possibilityToShowPopup) {
+      this.showDialog = true;
+    }
   }
 }
 </script>
