@@ -1,53 +1,36 @@
 # Citadelles
 Le projet "Citadelles" consiste à une version numérique du jeu de carte original éponyme "Citadelles".
 
-## Le projet
-Ce jeu est notre projet de fin de bachelor 3. C'est un jeu de cartes qui demande de la réflexion mais qui reste amusant et sans prise de tête entre amis. Il convient parfaitement aux petits comme aux grands. Il est aussi possible de faire des parties qui sont rapides , pratique quand on n'a pas beaucoup de temps.
+## Motivation
+Ce jeu est notre projet de fin de bachelor 3. C'est un jeu de cartes qui demande de la réflexion mais qui reste amusant et sans prise de tête entre amis. Il convient parfaitement aux petits comme aux grands. Il est aussi possible de faire des parties qui sont rapides. Pratique quand on n'a pas beaucoup de temps.
 
 ## Technologies utilisées
-- Vue : pour l'interface graphique (la gestion des évenements et le visuel)
-- Electron : pour faire une interface graphique avec des langage web tout en gardant un 'aspect logiciel' avec une fenêtre
-- Jest : pour les tests unitaires
-- TypeScript : pour typer nos données, toujours savoir ce qu'on attend en entrée et ce qu'on envoie en sortie
-- NodeJs : pour la base du projet, l'intégration des librairies, lier toutes les parties de notre projet
-- MongoDB : pour la base de données (utilisé avec l'ORM mongoose), qui permet d'être plus flexible qu'avec un SGBDR classique (ce dont on a besoin pour le projet)
+- Vue
+- Electron
+- Jest
+- TypeScript
+- NodeJs
+- MongoDB
 
-## Installation de l'environnement de développement
+## Installation
 Prérequis :
-- npm 6.13.4
-- nodejs 12.14.1
-- optionnellement yarn 1.21.1 
+- npm 6.13.4 ou yarn 1.21.1
+- nodejs 12.14.1 
 
 ```
-$ git clone https://github.com/paralixo/Citadelles.git 
-$ cd citadelles
-// ou npm install
-$ yarn install
-// ou npm run electron:serve
-$ yarn electron:serve
+git clone <https://github.com/paralixo/Citadelles.git> 
+cd citadelles
+yarn install / npm install
+yarn electron:serve / npm run electron:serve
 ```
 
-Pour lancer le projet il n'est pas obligatoire de l'installer l'environnement de développement.
-On peut simplement lancer l'installateur à la racine du projet.
+Pour lancer le projet il n'est pas obligatoire d'installer l'environnement de développement (voir executable du projet)
 
 ## Le jeu
-Voici les règles du jeu sur lesquelles nous nous somme basés: http://jeuxstrategie.free.fr/Citadelles_complet.php
-
-Effectivement, le jeu possédant 4 éditions différentes et plusieurs extensions les règles ont été modifiés plus d'une fois. 
+Voici les règles officielles du jeu : http://jeuxstrategie.free.fr/Citadelles_complet.php
 
 ## Déroulement type d'un tour de jeu
-Voici le déroulement 'basique' d'un tour de jeu.
-
-1) Le joueur selectionne un personnage au hasard. 
-2) Il choisit ensuite entre piocher deux cartes et en défausser une ou gagner trois pièces d'or. 
-3) Après cela il peut choisir d'acheter un quartier de sa main contre les pièces d'or spécifiées sur le quartier. 
-4) Au bout de huit quartiers posés sur le terrain d'un joueur, on attend la fin du tour de table. On compte alors les points. Le joueur ayant le plus de point remporte la partie.
-
-On peut ajouter de nombreuses actions pendant un tour selon :
-- notre personnage, certains ont des pouvoirs passifs, d'autres ont des pouvoirs actifs
-- les quartiers posés devant nous, certains quartiers nous offre de nouvelles possibilités pendant notre tour
-
-Ces capacités étant très situationnelles, nous vous invitons à lire les spécificités présentés dans les règle (cf. lien au début de la section).
+Le joueur sélectionne un personnage aléatoire. Il choisit ensuite entre piocher deux cartes et en défausser une ou gagner trois pièces d'or. Après cela il peut choisir d'acheter un quartier de sa main contre les pièces d'or spécifiées sur le dit quartier. Au bout de huit quartiers posés sur le terrain d'un joueur le tour continue puis la partie se termine à la fin de ce tour de table. On compte alors les points. Le joueur ayant le plus de points remporte la partie.
 
 ## Présentation du jeu
 Dans Citadelles, le but est de bâtir une cité prestigieuse avant que vos adversaires ne parviennent à construire la leur. Pour développer votre ville et de nouveaux quartiers, il vous faudra bien sûr de l’or, mais aussi le soutien des notables locaux, roi, échevin, cardinal, patricien ou archiviste, et parfois aussi de la lie de la cité, voleur, espion, assassin ou sorcière.
@@ -57,7 +40,7 @@ Citadelles est un jeu de stratégie qui se déroule dans un monde médiéval fan
 
 Pour réaliser cela, vous serez tour à tour l'un des plus puissants personnages de la ville, le Roi, l'Evèques, le Marchand etc. Mais il n'est pas facile de construire une Citadelles prospère et unique: cela nécessite richesses, ambition et filouterie.
 
-Les parties sont toutes différentes et il vous faudra user de tactique et de ruse pour parvenir au succès en évitant le coups tordus des autres joueurs (vol, assassinat).
+Les parties sont toutes différentes et il vous faudra user de tactique et de ruse pour parvenir au succès en évitant les coups tordus des autres joueurs (vol, assassinat).
 
 Chaque joueur développe une cité pour la rendre la plus riche et la plus prestigieuse. Vous construisez des quartiers à l'aide de cartes que vous exposez devant vous.
 A chaque tour, les joueurs doivent incarner un personnage doté d'un pouvoir particulier : construire plus vite, détruire un quartier, assassiner, voler, remplir son trésor, protéger sa cité, piocher plus de cartes .
@@ -67,22 +50,22 @@ Pourrez-vous deviner quels sont les personnages choisis par les autres joueurs ?
 Rebondissements, coups tordus et ruses sont les points forts de Citadelles. Les règles sont simples et accessibles et on se plonge volontiers dans l'ambiance médiévale.
 
 ## Routes
-### API de la base de données :
-Sur le port 3000 (en local).
+### API Database "localhost:3000" : 
+Chaque models possèdent 4 verbes http : 
+- get
+- post
+- delete
+- patch
 
-On possède 4 routes pour chaque modele de la base :
-- GET ```localhost:3000/:model``` : Récupérer les données du modèle
-- POST ```localhost:3000/:model``` : Insérer une nouvelle donnée dans le modèle
-- DELETE ```localhost:3000/:model``` : Supprimer une donnée du modèle
-- PATCH ```localhost:3000/:model``` : Mettre à jour une ou plusieurs données du modèle
+```/character``` : Permet d'obtenir la liste des personnages.
 
-Note: On peut passer des parametres dans le body de chaque requête (de la même façon qu'avec une base mongo).
-Les modèles disponibles sont : 
-- 'character'
-- 'deck'
-- 'district'
-- 'player'
-- 'type'
+```/deck``` : Permet d'avoir la liste des cartes des deck sous forme d'id.
+
+```/district``` : Permet d'avoir la liste des cartes de quartier.
+
+```/player``` : Permet d'avoir la liste des players ainsi que de leurs informations.
+
+```/type``` : Permet d'avoir la liste des differents types de quartier.
 
 ### API Du jeu "localhost:3001" :
 
@@ -126,7 +109,7 @@ Permet d'ajouter des joueurs (IA) à la partie.
 ![MainMenu](./src/assets/images/ImagesREADME/playMenu.png)
 
 ### Choix Aléatoire du personnage
-Choix du personnage au debut d'un tour de de table.
+Choix du personnage au debut d'un tour de table.
 ![MainMenu](./src/assets/images/ImagesREADME/aleatoireCharac.png)
 
 ### Affichage du personnage choisi
@@ -134,29 +117,29 @@ Affiche une fenêtre de dialogue avec les informations du personnage.
 ![MainMenu](./src/assets/images/ImagesREADME/charac.png)
 
 ### Action de début de tour
-Permet de choisir une action au debut du tour de jeu.
+Permet de choisir une action au début du tour de jeu.
 ![MainMenu](./src/assets/images/ImagesREADME/begChoice.png)
 
 ### Ciblage du voleur ou de l'assassin
-Choix de la cible du voleur ou de l'assasin.
+Choix de la cible du voleur ou de l'assassin.
 ![MainMenu](./src/assets/images/ImagesREADME/target.png)
 
 ### Achat d'un quartier
-Fenetre de dialogue pour acheter un quartier. Permet de voir les informations relatives au quartier séléctionné.
+Fenêtre de dialogue pour acheter un quartier. Permet de voir les informations relatives au quartier séléctionné.
 ![MainMenu](./src/assets/images/ImagesREADME/buy.png)
 
 ### Plateau de jeu
-Une image global du plateau avec la main du joueur, sa cité,  et les informations sur les autres joueurs.
+Une image globale du plateau avec la main du joueur, sa cité,  et les informations sur les autres joueurs.
 ![MainMenu](./src/assets/images/ImagesREADME/board.png)
 
 ## Management du projet
-- Dans un premier temps nous nous sommes concerté afin de mettre le projet au clair. (Choix technologiques, outils).
+- Dans un premier temps nous nous sommes concertés afin de mettre le projet au clair. (Choix technologiques, outils).
 
-- Nous avons ensuite fait des usersStorys que nous avons retranscrit au propre sur notre GitLab. *Note: Gitlab nous ayant laché pendant le projet nous avons migré sur GitHub et avons perdu les users story*
+- Nous avons ensuite fait des usersStorys que nous avons retranscrit au propre sur notre GitLab. *Note: Gitlab nous ayant laché pendant le projet nous avons migré sur GitHub et avons perdu les usersstorys*
 
 - Nous avons mis en place un Github avec un bot Discord et des règles afin de pouvoir valider mutuellement nos travaux. Mise en place des GitHooks pour les tests unitaires et ESLINT
 
-- Pour la répartition des taches nous faisions dans l'ordre de ce qu'on avit décidé au début. Le but etant de travailler chacun sur une fonctionnalitée différente a chaque fois.
+- Pour la répartition des tâches nous faisions dans l'ordre de ce qu'on avait décidé au début. Le but étant de travailler chacun sur une fonctionnalitée différentes à chaque fois.
 
 ## Contribution
 Developpeurs : Clément MEHAYE et Florian LAFUENTE
